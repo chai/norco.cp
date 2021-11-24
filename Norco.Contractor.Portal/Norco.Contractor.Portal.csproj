@@ -60,6 +60,9 @@
       <HintPath>..\packages\MFiles.VAF.Configuration.21.8.1\lib\net45\MFiles.VAF.Configuration.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MFilesAPI.Extensions, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFilesAPI.Extensions.1.0.5\lib\net45\MFilesAPI.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

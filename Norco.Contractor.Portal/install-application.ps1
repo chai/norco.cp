@@ -13,7 +13,7 @@ $appFilePath = "bin\Debug\Norco.Contractor.Portal.mfappx"
 $appGuid = "07916b1e-6279-490d-acf1-3aca25e04baa"
 
 # Target vault
-$vaultName = "ContractorPortalV12"
+$vaultName = "Portal PROD"
 
 # Connection details 
 $authType = [MFilesAPI.MFAuthType]::MFAuthTypeLoggedOnWindowsUser
