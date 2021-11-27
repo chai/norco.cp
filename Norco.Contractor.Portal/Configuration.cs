@@ -60,9 +60,8 @@ namespace Norco.Contractor.Portal
         // NOTE: The default value needs to be placed in both the JsonConfEditor
         // (or derived) attribute, and as a default value on the member.
         #region Object ID
-        
+
         [MFObjType(Required = true)]
-        [DataMember]
         public MFIdentifier DocumentRequestObject { get; set; }
             = "OT.DocumentRequest";
 
@@ -70,7 +69,6 @@ namespace Norco.Contractor.Portal
         #endregion
         #region Class ID
         [MFClass(Required = true)]
-        [DataMember]
         public MFIdentifier DocumentRequestClass { get; set; }
             = "CL.DocumentRequest";
 
@@ -85,7 +83,7 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DateOfExpiry { get; set; }
         = "PD.ExpiryDate";
 
-        
+
         [MFPropertyDef(Required = true)]
         public MFIdentifier ActivityStartDate { get; set; }
         = "PD.ActivityStartDate";
@@ -100,10 +98,30 @@ namespace Norco.Contractor.Portal
         public MFIdentifier CompanyContractors { get; set; }
         = "PD.CompanyContractors";
 
+                [MFPropertyDef(Required = true)]
+        public MFIdentifier ContractorCompany { get; set; }
+        = "PD.ContractorCompany";
+        
+
         [MFPropertyDef(Required = true)]
         public MFIdentifier IsDocumentValid { get; set; }
 = "PD.Valid";
 
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier EmailAddress { get; set; }
+= "PD.EmailAddress";
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier EmailAddress2 { get; set; }
+= "PD.EmailAddress2";
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier ExpiredDocument { get; set; }
+= "PD.ExpiredDocument";
+        
+
+
+        public const int SingleFile = 22;
 
         [DataMember]
         public List<ContractorTypeCertification> contractorTypeCertifications { get; set; }
@@ -118,6 +136,21 @@ namespace Norco.Contractor.Portal
             get;
             set;
         } = new MFilesAPI.Extensions.Email.SmtpConfiguration();
+
+
+        [DataMember]
+        public string PlaceHolderFile { get; set; }
+        = $@"C:\Temp\Placeholder.txt";
+        [DataMember]
+        public string NorcoNotificationPerson { get; set; }
+= $@"contractoradmin@norco.com.au";
+
+        [MFWorkflow]
+        public MFIdentifier DocumentRequestWorkflow { get; set; }
+        = "WF.DocumentRequest";
+        [MFState]
+        public MFIdentifier InitialDocumentRequest { get; set; }
+= "WFS.DocumentRequest.InitialDocumentRequest";
 
     }
 }

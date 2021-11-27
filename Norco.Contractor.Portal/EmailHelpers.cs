@@ -1,4 +1,5 @@
 ﻿using MFiles.VAF.Common;
+using MFilesAPI;
 using MFilesAPI.Extensions.Email;
 using System;
 using System.Collections.Generic;
@@ -29,77 +30,75 @@ namespace Norco.Contractor.Portal
 
 
 
-        /*
+
+
 
         private void SendEmail(int NumberOfDays, bool expired, StateEnvironment env)
         {
             try
             {
-                var mfileVendorId = env.ObjVerEx.Class == Configuration.RawMaterialClass.ID
-                    ? Configuration.RawMaterialVendor : Configuration.PackagingVendor;
-                var vendorObjVerExList = env.ObjVerEx.GetAllDirectReferences(mfileVendorId);
-                //Only want to do this if there is a vendor to contact
-                if (vendorObjVerExList != null || vendorObjVerExList.Count > 0)
-                {
+
                     // Create a message.
                     using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
                     {
+                    string ExpiryDate = "";
+                    string IssueDate = "";
+                   if ( env.ObjVerEx.TryGetProperty(Configuration.DateOfExpiry, out PropertyValue ExpiryDateProperty))
+                    {
+                        ExpiryDate = ExpiryDateProperty.Value.DisplayValue;
+                    }
+                  if(  env.ObjVerEx.TryGetProperty(Configuration.DateOfIssue, out PropertyValue IssueDateProperty))
+                    {
+                        IssueDate = IssueDateProperty.Value.DisplayValue;
+                    }
 
+                    emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
 
-                        var ExpiryDate = env.ObjVerEx.GetPropertyText(Configuration.CerticationExpiryDate);
-                        // Configure the message metadata.
-                        if (expired)
+                        var company = env.ObjVerEx.GetDirectReference(Configuration.ContractorCompany);
+                        if(company!=null)
                         {
-                            emailMessage.Subject = $"Certificate {env.ObjVerEx.Title} has expired";
-                        }
-                        else
-                        {
-                            emailMessage.Subject = $"Certificate {env.ObjVerEx.Title} will expire in {NumberOfDays} days, on {ExpiryDate}";
-                        }
-                        emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
-
-
-                        // To.
-
-
-                        foreach (var vendorinList in vendorObjVerExList)
-                        {
-                            //for each vendor get their contact details
-                            var contactDetailsList = vendorinList.GetPropertyText(Configuration.VendorContactDetails).Split(';');
-                            foreach (var toEmail in contactDetailsList)
+                            if(company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
                             {
-                                if (IsValidEmail(toEmail))
+                                if (IsValidEmail(email1.Value.DisplayValue))
                                 {
-                                    emailMessage.AddRecipient(AddressType.To, toEmail);
-                                }
-                                else
-                                {
-                                    SysUtils.ReportInfoToEventLog("SendEmail", $"Could not send email { emailMessage.Subject} to {toEmail} as its not a valid email address");
+                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email1.Value.DisplayValue);
                                 }
                             }
+                            if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email2))
+                            {
+                                if (IsValidEmail(email2.Value.DisplayValue))
+                                {
+                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email2.Value.DisplayValue);
+                                }
+                            }
+
                         }
 
 
+                        var contractor = env.ObjVerEx.GetDirectReference(Configuration.CompanyContractors);
+                        if (contractor != null)
+                        {
+                            if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
+                            {
+                                if (IsValidEmail(email1.Value.DisplayValue))
+                                {
+                                    emailMessage.AddRecipient(AddressType.To, email1.Value.DisplayValue);
+                                }
+                            }                           
+                        }
 
 
-                        var certificateProperties = GetCertificateProperty(env.ObjVerEx);
-
-
-                        var mfileManufactureList = env.ObjVerEx.Class == Configuration.RawMaterialClass.ID
-    ? Configuration.RawManufactureList : Configuration.PackageManufactureList;
-
-
-                        string ManufactureName = env.ObjVerEx.GetPropertyText(mfileManufactureList);
+                    emailMessage.AddRecipient(AddressType.CarbonCopy, Configuration.NorcoNotificationPerson);
 
 
 
-                        var mfileManufactureName = env.ObjVerEx.Class == Configuration.RawMaterialClass.ID
-? Configuration.RawMaterialList : Configuration.PackageMaterialList;
+                    
+                var certificateProperties = GetCertificateProperty(env.ObjVerEx);
 
-
-                        string MaterialName = env.ObjVerEx.GetPropertyText(mfileManufactureName);
-
-                        emailMessage.HtmlBody = $"Our records indicate that {ManufactureName} Food Safety & Quality certification for {MaterialName} has expired." +
+                    if(expired)
+                    {
+                        emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} has expired on {ExpiryDate}";
+                        emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} has expired on {ExpiryDate}." +
                             $"<br>" +
                             $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
                             $"<br>" +
@@ -110,13 +109,32 @@ namespace Norco.Contractor.Portal
                             $"<br>" +
                             $"Norco";
 
-                        // Add all files from the current object.
+                    }
+                    else
+                    {
+                        emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} will expire in {NumberOfDays} days, on {ExpiryDate}";
+                        emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} will expired on {ExpiryDate}." +
+                                                    $"<br>" +
+                                                    $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
+                                                    $"<br>" +
+                                                    $"Details of the certificate are below: <br> " +
+                                                    $"{certificateProperties}" +
+                                                    $"<br>" +
+                                                    $"Regards," +
+                                                    $"<br>" +
+                                                    $"Norco";
 
-                        emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
+                    }
+
+
+
+                    // Add all files from the current object.
+
+                    emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
                         // Send the message.
                         emailMessage.Send();
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -124,7 +142,7 @@ namespace Norco.Contractor.Portal
             }
 
         }
-*/
+
         private string GetCertificateProperty(ObjVerEx objVerEx)
         {
             string properties = "";
