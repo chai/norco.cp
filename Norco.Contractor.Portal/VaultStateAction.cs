@@ -41,7 +41,7 @@ namespace Norco.Contractor.Portal
 
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass);
 
-          //      propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
+                propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
 
 
                 propertyValues.RemoveProperty(Configuration.DateOfExpiry);
@@ -69,8 +69,12 @@ namespace Norco.Contractor.Portal
                 //});
 
                 
-                env.Vault.ObjectOperations.CreateNewObjectExQuick(                 
+              var docRequest=  env.Vault.ObjectOperations.CreateNewObjectExQuick(                 
                     Configuration.DocumentRequestObject, propertyValues, null, false, true, null);
+
+
+                env.ObjVerEx.SaveProperty(Configuration.DocumentRequest, MFDataType.MFDatatypeLookup, docRequest);
+
 
                 try
                 {

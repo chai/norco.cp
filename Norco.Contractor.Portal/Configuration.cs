@@ -75,6 +75,11 @@ namespace Norco.Contractor.Portal
         #endregion
 
 
+
+            [MFPropertyDef(Required = true)]
+        public MFIdentifier DocumentRequest { get; set; }
+            = "PD.DocumentRequest";
+
         [MFPropertyDef(Required = true)]
         public MFIdentifier DateOfIssue { get; set; }
             = "PD.DateOfIssue";
