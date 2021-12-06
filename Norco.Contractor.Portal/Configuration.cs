@@ -56,6 +56,7 @@ namespace Norco.Contractor.Portal
     [DataContract]
     public class Configuration
     {
+        public const int OwnerDocumentRequest= 1189;
 
         // NOTE: The default value needs to be placed in both the JsonConfEditor
         // (or derived) attribute, and as a default value on the member.
@@ -72,11 +73,41 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DocumentRequestClass { get; set; }
             = "CL.DocumentRequest";
 
+        [MFClass(Required = true)]
+        public MFIdentifier OtherDocumentClass { get; set; }
+    = "Cl.OtherDocument";
+
+
+        
+
         #endregion
 
+        #region Workflow
+        [MFWorkflow]
 
 
-            [MFPropertyDef(Required = true)]
+        public MFIdentifier WorkflowTemporaryDocumentUploaded { get; set; }
+        = "WF.TemporaryDocumentUploaded";
+        
+
+
+
+        #endregion
+
+        #region Workflow State
+
+        [MFState(Required = true)]
+        public MFIdentifier StateDocumentUploaded { get; set; }
+    = "WFS.TemporaryDocumentUploaded.DocumentUploaded";
+
+
+        [MFState(Required = true)]
+        public MFIdentifier StateRequestedDocumentProvided { get; set; }
+= "WFS.DocumentRequest.RequestedDocumentProvided";
+
+        #endregion
+
+        [MFPropertyDef(Required = true)]
         public MFIdentifier DocumentRequest { get; set; }
             = "PD.DocumentRequest";
 

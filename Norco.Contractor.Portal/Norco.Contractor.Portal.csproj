@@ -83,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="VaultApplication.cs" />
+    <Compile Include="VaultAutomaticTransition.cs" />
     <Compile Include="VaultEventHandler.cs" />
     <Compile Include="VaultStateAction.cs" />
   </ItemGroup>
