@@ -28,8 +28,16 @@ namespace Norco.Contractor.Portal
             {
 
 
+                /*
+                 
+                 Todo:
 
+                Add default workflow and state
+                Change Document Request workflow
+                Change default Document Request property to Document Completed bool
+                Filter Hubshare on this Property
 
+                 */
 
                 var searchBuilder = new MFSearchBuilder(env.Vault);
                 searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
@@ -38,7 +46,7 @@ namespace Norco.Contractor.Portal
                 condition.ConditionType = MFConditionType.MFConditionTypeEqual;
                 condition.Expression.SetPropertyValueExpression(Configuration.OwnerDocumentRequest, MFParentChildBehavior.MFParentChildBehaviorNone);
                 condition.TypedValue.SetValue(MFDataType.MFDatatypeLookup, env.ObjVer.ID);
-//                searchBuilder.References( Configuration.OwnerDocumentRequest, env.ObjVer);
+                searchBuilder.References( Configuration.OwnerDocumentRequest, env.ObjVer);
                 searchBuilder.Deleted(false);
                 searchBuilder.Conditions.Add(-1, condition);
 
