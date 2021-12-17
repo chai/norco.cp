@@ -84,14 +84,13 @@ namespace Norco.Contractor.Portal
 
         #region Workflow
         [MFWorkflow]
-
-
         public MFIdentifier WorkflowTemporaryDocumentUploaded { get; set; }
         = "WF.TemporaryDocumentUploaded";
-        
 
 
-
+        [MFWorkflow]
+        public MFIdentifier WorkflowDocumentExpiry { get; set; }
+       = "WF.ContractorDocStatus";
         #endregion
 
         #region Workflow State
@@ -100,6 +99,9 @@ namespace Norco.Contractor.Portal
         public MFIdentifier StateDocumentUploaded { get; set; }
     = "WFS.TemporaryDocumentUploaded.DocumentUploaded";
 
+        [MFState(Required = true)]
+        public MFIdentifier StateInitialExpiryCheck { get; set; }
+= "WFS.DocumentExpiryNotification.InitialExpiryCheck";
 
         [MFState(Required = true)]
         public MFIdentifier StateRequestedDocumentProvided { get; set; }
