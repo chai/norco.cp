@@ -126,9 +126,61 @@ namespace Norco.Contractor.Portal
 
             }
         }
-
+      
         
-                    [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
+        [StateAction ("WFS.TemporaryDocumentUploaded.DocumentUploaded")]
+        public void ConvertDocumentClass(StateEnvironment env)
+        {
+
+            try
+            {
+                var parentDocumentRequest = env.ObjVerEx.GetDirectReference(Configuration.OwnerDocumentRequest);
+                if (parentDocumentRequest != null)
+                {
+                    var expiredDoc = parentDocumentRequest.GetDirectReference(Configuration.ExpiredDocument);
+                    if (expiredDoc != null)
+                    {
+                        foreach (var propertyToTrim in Configuration.DefaultPropertyToRemoval)
+                        {
+                            env.ObjVerEx.RemoveProperty(propertyToTrim.Prop);
+                        }
+
+
+                        env.ObjVerEx.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass ,MFDataType.MFDatatypeLookup,expiredDoc.Class);
+                        env.ObjVerEx.SaveProperties();
+                        parentDocumentRequest.SetProperty(Configuration.DocumentUploaded, MFDataType.MFDatatypeBoolean, true);
+                        parentDocumentRequest.SetProperty(Configuration.ReplacementDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
+                        parentDocumentRequest.SaveProperties();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
+
+
+        [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
+        public void SetValidatedBy(StateEnvironment env)
+        {
+
+            try
+            {
+                var replacementDocument = env.ObjVerEx.GetDirectReference(Configuration.ReplacementDocument);
+                if (replacementDocument != null)
+                {
+                    replacementDocument.SaveProperty(Configuration.ValidatedBy, MFDataType.MFDatatypeLookup, env.CurrentUserID);    
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
         public void CreateReplacementDocument(StateEnvironment env)
         {
             try
@@ -153,13 +205,13 @@ namespace Norco.Contractor.Portal
                 condition.ConditionType = MFConditionType.MFConditionTypeEqual;
                 condition.Expression.SetPropertyValueExpression(Configuration.OwnerDocumentRequest, MFParentChildBehavior.MFParentChildBehaviorNone);
                 condition.TypedValue.SetValue(MFDataType.MFDatatypeLookup, env.ObjVer.ID);
-                searchBuilder.References(Configuration.OwnerDocumentRequest, env.ObjVer);
+              //  searchBuilder.References(Configuration.OwnerDocumentRequest, env.ObjVer);
                 searchBuilder.Deleted(false);
                 searchBuilder.Conditions.Add(-1, condition);
 
                 // Execute the search.
                 var searchResult = searchBuilder.FindEx();
-                if (searchResult != null)
+                if (searchResult != null && searchResult.Count>0)
                 {
                     var expiredDoc = env.ObjVerEx.GetDirectReference(Configuration.ExpiredDocument);
                     var mfPropertyValuesBuilder = new MFPropertyValuesBuilder(env.Vault);
@@ -186,7 +238,7 @@ namespace Norco.Contractor.Portal
                     mfPropertyValuesBuilder.SetWorkflowState(Configuration.WorkflowDocumentExpiry, Configuration.StateInitialExpiryCheck);
 
 
-                    ObjVerEx newLetter = new ObjVerEx(env.Vault, env.Vault.ObjectOperations.CreateNewObject(expiredDoc.Type, mfPropertyValuesBuilder.Values));
+                    ObjVerEx newExpiredDoc = new ObjVerEx(env.Vault, env.Vault.ObjectOperations.CreateNewObject(expiredDoc.Type, mfPropertyValuesBuilder.Values));
 
 
                     int fileCounter = 0;
@@ -200,7 +252,7 @@ namespace Norco.Contractor.Portal
                         foreach (ObjectFile objFile in objFiles)
                         {
 
-                            CopyObjectFiles(env.Vault, objFiles, newLetter.ObjVer);
+                            CopyObjectFiles(env.Vault, objFiles, newExpiredDoc.ObjVer);
                             fileCounter++;
                             //ObjectFiles objFiles = env.Vault.ObjectFileOperations.GetFiles(searchResult.ObjVer);
                             //ObjectFile objFile = objFiles[1];
@@ -214,10 +266,10 @@ namespace Norco.Contractor.Portal
                     }
                     if (fileCounter == 1)
                     {
-                        env.Vault.ObjectOperations.SetSingleFileObject(newLetter.ObjVer, true);
+                        env.Vault.ObjectOperations.SetSingleFileObject(newExpiredDoc.ObjVer, true);
                     }
-                    env.Vault.ObjectFileOperations.UpdateMetadataInFile(newLetter.ObjVer, -1, false);
-                    newLetter.CheckIn();
+                    //env.Vault.ObjectFileOperations.UpdateMetadataInFile(newExpiredDoc.ObjVer, -1, false);
+                    //newExpiredDoc.CheckIn();
 
                 }
 

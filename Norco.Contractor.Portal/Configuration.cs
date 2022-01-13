@@ -33,6 +33,35 @@ namespace Norco.Contractor.Portal
 
     }
 
+
+    [DataContract]
+    public class RenewalDocument
+    {
+        [DataMember]
+        [MFClass(Required = true)]
+        public MFIdentifier DocumentType { get; set; }
+        [DataMember]
+        public List<Property> PropertyToRemove { get; set; }
+        public List<Property> PropertyToCopyOver { get; set; }
+
+
+    }
+
+    [DataContract]
+    public class Property
+    {
+
+
+
+
+        [DataMember]
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier Prop { get; set; }
+
+    }
+
+
+
     [DataContract]
     public class ContractorTypeCertification
     {
@@ -183,12 +212,35 @@ namespace Norco.Contractor.Portal
         public string NorcoNotificationPerson { get; set; }
 = $@"contractoradmin@norco.com.au";
 
+
+        [DataMember]
+        public List<Property> DefaultPropertyToRemoval{ get; set; }
+
+        [DataMember]
+        public List<RenewalDocument> RenewalDocuments { get; set; }
+
+
         [MFWorkflow]
         public MFIdentifier DocumentRequestWorkflow { get; set; }
         = "WF.DocumentRequest";
         [MFState]
         public MFIdentifier InitialDocumentRequest { get; set; }
 = "WFS.DocumentRequest.InitialDocumentRequest";
+
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier DocumentUploaded { get; set; }
+= "PD.AllowUpload";
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier ValidatedBy { get; set; }
+= "PD.ValidatedBy";
+
+
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier ReplacementDocument { get; set; }
+= "PD.ReplacementDocument";
 
     }
 }
