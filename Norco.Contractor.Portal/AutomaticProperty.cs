@@ -57,8 +57,30 @@ namespace Norco.Contractor.Portal
             return typedValue;
         }
 
+        
+        [PropertyCustomValue("PD.DocumentUploadedBy")]
+        public TypedValue setupUploaderBasedOnEmail(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+            typedValue.SetValue(MFDataType.MFDatatypeLookup,null);
+            try {
+                var searchBuilder = new MFSearchBuilder(env.Vault);
+                searchBuilder.ObjType(Configuration.EmployeeContractorObject);
+                searchBuilder.Class(Configuration.EmployeeContractorClass);
+                searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, env.ObjVerEx.GetPropertyText(Configuration.UploaderEmailAddress));
+                var uploader = searchBuilder.FindOneEx();
+                if(uploader != null)
+                {
+                    typedValue.SetValue(MFDataType.MFDatatypeLookup, uploader.ID);
+                }
 
-        [PropertyCustomValue("PD.Valid")]
+
+            }
+            catch (Exception ex) { }
+            return typedValue;
+        }
+
+            [PropertyCustomValue("PD.Valid")]
         public TypedValue isDocumentValid(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();

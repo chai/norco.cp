@@ -97,6 +97,11 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DocumentRequestObject { get; set; }
             = "OT.DocumentRequest";
 
+        [MFObjType(Required = true)]
+        public MFIdentifier EmployeeContractorObject { get; set; }
+            = "OT.Contractor";
+
+
 
         #endregion
         #region Class ID
@@ -109,7 +114,10 @@ namespace Norco.Contractor.Portal
     = "Cl.OtherDocument";
 
 
-        
+        [MFClass(Required = true)]
+        public MFIdentifier EmployeeContractorClass { get; set; }
+            = "CL.Employee_Contractor";
+
 
         #endregion
 
@@ -187,7 +195,9 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier ExpiredDocument { get; set; }
 = "PD.ExpiredDocument";
-        
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier UploaderEmailAddress { get; set; }
+= "PD.UploaderEmail";
 
 
         public const int SingleFile = 22;

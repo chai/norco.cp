@@ -185,6 +185,8 @@ namespace Norco.Contractor.Portal
                 var replacementDocument = env.ObjVerEx.GetDirectReference(Configuration.ReplacementDocument);
                 if (replacementDocument != null)
                 {
+                    replacementDocument.SetProperty(Configuration.UploaderEmailAddress, MFDataType.MFDatatypeText, env.ObjVerEx.GetPropertyText(Configuration.UploaderEmailAddress));
+                    
                     replacementDocument.SetProperty(Configuration.ValidatedBy, MFDataType.MFDatatypeLookup, env.CurrentUserID);
                     replacementDocument.SetWorkflowState(Configuration.DocumentExpiryNotificationWorkflow);//, Configuration.InitialDocumentExpiryNotificationState);
                     replacementDocument.SaveProperties();
