@@ -140,13 +140,22 @@ namespace Norco.Contractor.Portal
                     var expiredDoc = parentDocumentRequest.GetDirectReference(Configuration.ExpiredDocument);
                     if (expiredDoc != null)
                     {
-                        foreach (var propertyToTrim in Configuration.DefaultPropertyToRemoval)
+                        var renewalDocument = Configuration.RenewalDocuments.Find(r => r.DocumentType.ID == expiredDoc.Class);
+                        if (renewalDocument != null)
                         {
-                            env.ObjVerEx.RemoveProperty(propertyToTrim.Prop);
+                            foreach (var propertyToTrim in renewalDocument.PropertyToRemove)
+                            {
+                                env.ObjVerEx.RemoveProperty(propertyToTrim.Prop);
+                            }
+                            foreach (var propertyToCopy in renewalDocument.PropertyToCopyOver)
+                            {
+                                env.ObjVerEx.SetProperty(expiredDoc.Properties.GetProperty(propertyToCopy.Prop));
+                            }
+
                         }
 
 
-                        env.ObjVerEx.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass ,MFDataType.MFDatatypeLookup,expiredDoc.Class);
+                      //  env.ObjVerEx.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass ,MFDataType.MFDatatypeLookup,expiredDoc.Class);
                         env.ObjVerEx.SaveProperties();
                         parentDocumentRequest.SetProperty(Configuration.DocumentUploaded, MFDataType.MFDatatypeBoolean, true);
                         parentDocumentRequest.SetProperty(Configuration.ReplacementDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);

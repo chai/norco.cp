@@ -40,8 +40,10 @@ namespace Norco.Contractor.Portal
         [DataMember]
         [MFClass(Required = true)]
         public MFIdentifier DocumentType { get; set; }
+
         [DataMember]
         public List<Property> PropertyToRemove { get; set; }
+        [DataMember]
         public List<Property> PropertyToCopyOver { get; set; }
 
 
@@ -212,9 +214,6 @@ namespace Norco.Contractor.Portal
         public string NorcoNotificationPerson { get; set; }
 = $@"contractoradmin@norco.com.au";
 
-
-        [DataMember]
-        public List<Property> DefaultPropertyToRemoval{ get; set; }
 
         [DataMember]
         public List<RenewalDocument> RenewalDocuments { get; set; }
