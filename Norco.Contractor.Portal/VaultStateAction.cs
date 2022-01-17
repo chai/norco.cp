@@ -37,7 +37,7 @@ namespace Norco.Contractor.Portal
                 var propertyValues = env.ObjVerEx.Properties;
 
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefWorkflow,MFDataType.MFDatatypeLookup,Configuration.DocumentRequestWorkflow);
-                propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequest);
+                propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequestState);
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass);
 
                 propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
@@ -155,7 +155,7 @@ namespace Norco.Contractor.Portal
                         }
 
 
-                      //  env.ObjVerEx.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass ,MFDataType.MFDatatypeLookup,expiredDoc.Class);
+
                         env.ObjVerEx.SaveProperties();
                         parentDocumentRequest.SetProperty(Configuration.DocumentUploaded, MFDataType.MFDatatypeBoolean, true);
                         parentDocumentRequest.SetProperty(Configuration.ReplacementDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
@@ -170,9 +170,13 @@ namespace Norco.Contractor.Portal
         }
 
 
+        
+        [StateAction("WFS.TemporaryDocumentUploaded.Covert")]
+        public void SetNewDocumentActiveRetireOldDocument(StateEnvironment env)
+        {
+        }
 
-
-        [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
+            [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
         public void SetValidatedBy(StateEnvironment env)
         {
 
@@ -181,10 +185,21 @@ namespace Norco.Contractor.Portal
                 var replacementDocument = env.ObjVerEx.GetDirectReference(Configuration.ReplacementDocument);
                 if (replacementDocument != null)
                 {
-                    replacementDocument.SaveProperty(Configuration.ValidatedBy, MFDataType.MFDatatypeLookup, env.CurrentUserID);    
+                    replacementDocument.SetProperty(Configuration.ValidatedBy, MFDataType.MFDatatypeLookup, env.CurrentUserID);
+                    replacementDocument.SetWorkflowState(Configuration.DocumentExpiryNotificationWorkflow);//, Configuration.InitialDocumentExpiryNotificationState);
+                    replacementDocument.SaveProperties();
                 }
+
+                var expiredDocument = env.ObjVerEx.GetDirectReference(Configuration.ExpiredDocument);
+                if(expiredDocument != null)
+                {
+                    expiredDocument.SetWorkflowState(null,Configuration.ExpiredDocumentReplacedWithValidState);
+                    expiredDocument.SaveProperties();
+                    //replacementDocument.SaveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.ExpiredDocumentReplacedWithValidState);
+                }
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

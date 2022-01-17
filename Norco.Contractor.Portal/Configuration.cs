@@ -222,10 +222,28 @@ namespace Norco.Contractor.Portal
         [MFWorkflow]
         public MFIdentifier DocumentRequestWorkflow { get; set; }
         = "WF.DocumentRequest";
+
+        [MFWorkflow]
+        public MFIdentifier DocumentExpiryNotificationWorkflow { get; set; }
+= "WF.ContractorDocStatus";
+
+
+
         [MFState]
-        public MFIdentifier InitialDocumentRequest { get; set; }
+        public MFIdentifier InitialDocumentExpiryNotificationState { get; set; }
+= "WFS.DocumentExpiryNotification.InitialExpiryCheck";
+
+
+
+        [MFState]
+        public MFIdentifier InitialDocumentRequestState { get; set; }
 = "WFS.DocumentRequest.InitialDocumentRequest";
 
+        [MFState]
+        public MFIdentifier ExpiredDocumentReplacedWithValidState { get; set; }
+= "WFS.DocumentExpiryNotification.Valid";
+
+        
 
         [MFPropertyDef(Required = true)]
         public MFIdentifier DocumentUploaded { get; set; }
