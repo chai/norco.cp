@@ -63,15 +63,20 @@ namespace Norco.Contractor.Portal
         {
             TypedValue typedValue = new TypedValue();
             typedValue.SetValue(MFDataType.MFDatatypeLookup,null);
+
             try {
-                var searchBuilder = new MFSearchBuilder(env.Vault);
-                searchBuilder.ObjType(Configuration.EmployeeContractorObject);
-                searchBuilder.Class(Configuration.EmployeeContractorClass);
-                searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, env.ObjVerEx.GetPropertyText(Configuration.UploaderEmailAddress));
-                var uploader = searchBuilder.FindOneEx();
-                if(uploader != null)
+                var uploaderEmailAddress = env.ObjVerEx.GetPropertyText(Configuration.UploaderEmailAddress);
+                if (!uploaderEmailAddress.Equals(String.Empty))
                 {
-                    typedValue.SetValue(MFDataType.MFDatatypeLookup, uploader.ID);
+                    var searchBuilder = new MFSearchBuilder(env.Vault);
+                    searchBuilder.ObjType(Configuration.EmployeeContractorObject);
+                    searchBuilder.Class(Configuration.EmployeeContractorClass);
+                    searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, uploaderEmailAddress);
+                    var uploader = searchBuilder.FindOneEx();
+                    if (uploader != null)
+                    {
+                        typedValue.SetValue(MFDataType.MFDatatypeLookup, uploader.ID);
+                    }
                 }
 
 
