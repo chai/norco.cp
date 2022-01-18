@@ -54,7 +54,7 @@ namespace Norco.Contractor.Portal
 
                     emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
 
-                        var company = env.ObjVerEx.GetDirectReference(Configuration.ContractorCompany);
+                        var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
                         if(company!=null)
                         {
                             if(company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
@@ -75,7 +75,7 @@ namespace Norco.Contractor.Portal
                         }
 
 
-                        var contractor = env.ObjVerEx.GetDirectReference(Configuration.CompanyContractors);
+                        var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
                         if (contractor != null)
                         {
                             if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))

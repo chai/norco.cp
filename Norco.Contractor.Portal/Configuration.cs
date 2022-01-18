@@ -172,11 +172,11 @@ namespace Norco.Contractor.Portal
 
 
         [MFPropertyDef(Required = true)]
-        public MFIdentifier CompanyContractors { get; set; }
+        public MFIdentifier ContractorsForCompany { get; set; }
         = "PD.CompanyContractors";
 
                 [MFPropertyDef(Required = true)]
-        public MFIdentifier ContractorCompany { get; set; }
+        public MFIdentifier CompanyOfContractor { get; set; }
         = "PD.ContractorCompany";
         
 
@@ -268,6 +268,11 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier ReplacementDocument { get; set; }
 = "PD.ReplacementDocument";
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier EmployeeContractorEmail { get; set; }
+= "PD.EmployeeContractorEmail";
+
 
     }
 }

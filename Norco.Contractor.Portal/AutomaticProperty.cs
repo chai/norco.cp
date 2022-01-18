@@ -65,7 +65,7 @@ namespace Norco.Contractor.Portal
 
             try
             {
-                var companyName = env.ObjVerEx.GetPropertyText(Configuration.ContractorCompany);
+                var companyName = env.ObjVerEx.GetPropertyText(Configuration.CompanyOfContractor);
                 if (!companyName.Equals(String.Empty))
                 {
                  
@@ -156,7 +156,7 @@ namespace Norco.Contractor.Portal
                 searchBuilder.Class(certDoc);
                 //  searchBuilder.Property(Configuration.IsDocumentValid, MFDataType.MFDatatypeBoolean, isValid);
 
-                searchBuilder.Property(Configuration.CompanyContractors, MFDataType.MFDatatypeLookup, contractor.ID);
+                searchBuilder.Property(Configuration.ContractorsForCompany, MFDataType.MFDatatypeLookup, contractor.ID);
 
 
                 // Add a "not deleted" filter.
