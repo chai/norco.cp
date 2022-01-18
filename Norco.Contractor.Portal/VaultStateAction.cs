@@ -43,7 +43,6 @@ namespace Norco.Contractor.Portal
                 propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
 
 
-                propertyValues.RemoveProperty(Configuration.ValidatedBy);
                 propertyValues.RemoveProperty(Configuration.IsDocumentValid);
                 propertyValues.RemoveProperty(Configuration.SingleFile);
                 propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefObjectID);
