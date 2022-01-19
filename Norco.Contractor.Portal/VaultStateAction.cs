@@ -43,12 +43,6 @@ namespace Norco.Contractor.Portal
                 propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
 
 
-                var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
-                if (contractor != null)
-                {
-
-                    propertyValues.SetProperty(Configuration.EmployeeContractorEmail, MFDataType.MFDatatypeText, contractor.GetPropertyText(Configuration.EmailAddress));
-                }
 
 
                 propertyValues.RemoveProperty(Configuration.IsDocumentValid);

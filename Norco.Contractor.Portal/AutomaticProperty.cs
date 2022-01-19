@@ -140,6 +140,26 @@ namespace Norco.Contractor.Portal
         }
 
 
+        [PropertyCustomValue("PD.EmployeeContractorEmail")]
+        public TypedValue EmployeeContractorEmail(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+            typedValue.SetValue(MFDataType.MFDatatypeText, false);
+            try
+            {
+                var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
+                if (contractor != null)
+                {
+                    typedValue.SetValue(MFDataType.MFDatatypeText, contractor.GetPropertyText(Configuration.EmailAddress));
+                }
+
+
+            }
+            catch (Exception ex)
+            { }
+
+            return typedValue;
+        }
             private DocumentStatus FoundDocument(ObjVerEx contractor, Vault vault, MFIdentifier certDoc)
         {
             try
