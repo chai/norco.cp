@@ -1,6 +1,11 @@
 using MFiles.VAF.Configuration;
+using MFilesAPI;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using MFiles.VAF.Extensions;
+using MFiles.VAF.Extensions.ScheduledExecution;
+using DailyTrigger = MFiles.VAF.Extensions.ScheduledExecution.DailyTrigger;
 
 namespace Norco.Contractor.Portal
 {
@@ -273,6 +278,28 @@ namespace Norco.Contractor.Portal
         public MFIdentifier EmployeeContractorEmail { get; set; }
 = "PD.EmployeeContractorEmail";
 
+
+
+
+
+
+
+        [DataMember]
+        [RecurringOperationConfiguration(VaultApplication.QueueId, VaultApplication.UpdateDocumentIsValid)]
+        public Schedule ImportDataSchedule { get; set; } = new Schedule()
+        {
+            Enabled = true,
+            Triggers = new List<Trigger>()
+            {
+                new DailyTrigger()
+                {
+                    TriggerTimes = new List<TimeSpan>()
+                    {
+                        new TimeSpan(4, 0, 0) // 4am
+					}
+                }
+            }
+        };
 
     }
 }

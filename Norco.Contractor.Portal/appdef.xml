@@ -10,7 +10,7 @@
   <version>0.7.9</version>
   <copyright></copyright>
   <required-mfiles-version>20.5.0.0</required-mfiles-version>
-  <multi-server-compatible>false</multi-server-compatible>
+  <multi-server-compatible>true</multi-server-compatible>
   <extension-objects>
     <extension-object>
       <name>Norco.Contractor.Portal</name>

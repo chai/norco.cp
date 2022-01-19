@@ -174,6 +174,21 @@ namespace Norco.Contractor.Portal
         [StateAction("WFS.TemporaryDocumentUploaded.Covert")]
         public void SetNewDocumentActiveRetireOldDocument(StateEnvironment env)
         {
+
+
+            var searchBuilder = new MFSearchBuilder(env.Vault);
+            searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
+            searchBuilder.Property(Configuration.IsDocumentValid, MFDataType.MFDatatypeBoolean, true);
+            var objVerExList = searchBuilder.FindEx();
+            foreach (var objVerEx in objVerExList)
+            {
+
+
+                env.Vault.ObjectFileOperations.UpdateMetadataInFile(objVerEx.ObjVer, -1, false);
+
+
+            }
+
         }
 
             [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]

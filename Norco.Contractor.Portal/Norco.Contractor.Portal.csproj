@@ -42,30 +42,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.MFilesAPI, Version=7.0.0.0, Culture=neutral, PublicKeyToken=f1b4733f444f7ad0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Interop.MFilesAPI.21.8.1\lib\net45\Interop.MFilesAPI.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Interop.MFilesAPI.21.11.3\lib\net45\Interop.MFilesAPI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="MFiles.Crypto, Version=21.8.10524.1, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\MFiles.Crypto.21.8.1\lib\net45\MFiles.Crypto.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MFiles.Crypto, Version=21.11.10853.3, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFiles.Crypto.21.11.3\lib\net45\MFiles.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="MFiles.VAF, Version=2.3.623.2, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\MFiles.VAF.2.3.623.2\lib\net45\MFiles.VAF.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MFiles.VAF, Version=2.3.623.6, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFiles.VAF.2.3.623.6\lib\net45\MFiles.VAF.dll</HintPath>
     </Reference>
-    <Reference Include="MFiles.VAF.Configuration, Version=21.8.10524.1, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\MFiles.VAF.Configuration.21.8.1\lib\net45\MFiles.VAF.Configuration.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MFiles.VAF.Configuration, Version=21.11.10853.3, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFiles.VAF.Configuration.21.11.3\lib\net45\MFiles.VAF.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="MFiles.VAF.Configuration.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\MFiles.VAF.Configuration.21.8.1\lib\net45\MFiles.VAF.Configuration.Interfaces.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\MFiles.VAF.Configuration.21.11.3\lib\net45\MFiles.VAF.Configuration.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="MFilesAPI.Extensions, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MFilesAPI.Extensions.1.0.5\lib\net45\MFilesAPI.Extensions.dll</HintPath>
+    <Reference Include="MFiles.VAF.Extensions, Version=1.3.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFiles.VAF.Extensions.1.3.1.3\lib\net45\MFiles.VAF.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="MFilesAPI.Extensions, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFilesAPI.Extensions.1.0.6\lib\net45\MFilesAPI.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,6 +80,7 @@
     <Compile Include="Validation.cs" />
     <Compile Include="VaultApplication.cs" />
     <Compile Include="VaultAutomaticTransition.cs" />
+    <Compile Include="VaultBackgroundOperation.cs" />
     <Compile Include="VaultEventHandler.cs" />
     <Compile Include="VaultStateAction.cs" />
   </ItemGroup>
@@ -93,6 +90,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="install-application.ps1" />
     <None Include="packages.config" />
   </ItemGroup>

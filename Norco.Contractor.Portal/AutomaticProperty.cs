@@ -150,7 +150,7 @@ namespace Norco.Contractor.Portal
                 var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
                 if (contractor != null)
                 {
-                    typedValue.SetValue(MFDataType.MFDatatypeText, contractor.GetPropertyText(Configuration.EmailAddress));
+                    typedValue.SetValue(MFDataType.MFDatatypeText, $"{contractor.GetPropertyText(Configuration.EmailAddress)} {DateTime.Now}");
                 }
 
 
