@@ -140,6 +140,22 @@ namespace Norco.Contractor.Portal
         }
 
 
+
+        [PropertyCustomValue("PD.Test")]
+        public TypedValue Test(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+            typedValue.SetValue(MFDataType.MFDatatypeText, false);
+            try
+            {
+                typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongTimeString()}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return typedValue;
+        }
         [PropertyCustomValue("PD.EmployeeContractorEmail")]
         public TypedValue EmployeeContractorEmail(PropertyEnvironment env)
         {

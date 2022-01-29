@@ -170,13 +170,30 @@ namespace Norco.Contractor.Portal
         }
 
 
-        
+
         [StateAction("WFS.TemporaryDocumentUploaded.Covert")]
         public void SetNewDocumentActiveRetireOldDocument(StateEnvironment env)
         {
+
+
+            UpdateObject(env.Vault, out bool bob);
+
+            //var searchBuilder = new MFSearchBuilder(env.Vault);
+            //searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
+            //searchBuilder.Property(Configuration.IsDocumentValid, MFDataType.MFDatatypeBoolean, true);
+            //var objVerExList = searchBuilder.FindEx();
+            //foreach (var objVerEx in objVerExList)
+            //{
+
+            //    objVerEx.CheckOut();
+            //    env.Vault.ObjectFileOperations.UpdateMetadataInFile(objVerEx.ObjVer, -1, false);
+            //    objVerEx.CheckIn();
+
+
+            //}
         }
 
-            [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
+        [StateAction("WFS.DocumentRequest.RequestedDocuentValidated")]
         public void SetValidatedBy(StateEnvironment env)
         {
 
@@ -206,6 +223,11 @@ namespace Norco.Contractor.Portal
 
             }
         }
+
+
+
+
+
 
         public void CreateReplacementDocument(StateEnvironment env)
         {

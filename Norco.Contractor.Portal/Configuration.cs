@@ -1,6 +1,8 @@
 using MFiles.VAF.Configuration;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using MFiles.VAF.Configuration.JsonAdaptor;
+using MFilesAPI;
 
 namespace Norco.Contractor.Portal
 {
@@ -34,6 +36,26 @@ namespace Norco.Contractor.Portal
     }
 
 
+    [DataContract]
+    public class ObjectsToUpdate
+    {
+        [DataMember]
+        [JsonConfEditor(DefaultValue = 12)]
+        public int AutoCalculatePolling = 12;
+
+        [DataMember]
+        [JsonConfEditor(DefaultValue = 2)]
+        public int AutoCalculateAtTime = 2;
+
+
+        [DataMember]
+        [JsonConfEditor(DefaultValue = false)]
+        public bool StartAutoCalculatePolling = false;
+
+        [DataMember]
+        public List<SearchConditionsJA> FilterForObjects { get; set; }
+    }
+    
     [DataContract]
     public class RenewalDocument
     {
@@ -220,6 +242,7 @@ namespace Norco.Contractor.Portal
         [DataMember]
         public string PlaceHolderFile { get; set; }
         = $@"C:\Temp\Placeholder.txt";
+
         [DataMember]
         public string NorcoNotificationPerson { get; set; }
 = $@"contractoradmin@norco.com.au";
@@ -272,7 +295,41 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier EmployeeContractorEmail { get; set; }
 = "PD.EmployeeContractorEmail";
+        
+        [DataMember]
+        public ObjectsToUpdate TaskConfig { get; set; }
+        = new ObjectsToUpdate();
 
+
+        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = "{6A203C49-C4F8-4F25-AE2E-8C557FDBD3CF}")]
+        public string VaultGUID = @"{6A203C49-C4F8-4F25-AE2E-8C557FDBD3CF}";
+
+        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = "")]
+        public string Domain = @"";
+
+        [DataMember]
+        [Security(IsPassword = true, ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = @"")]
+        public string MFilesPassword { get; set; } = @"";
+
+        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = @"")]
+        public string MFilesUsername = @"";
+
+        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = MFAuthType.MFAuthTypeSpecificMFilesUser)]
+        public MFAuthType AuthType { get; set; }
+
+
+      
 
     }
+
+    
 }

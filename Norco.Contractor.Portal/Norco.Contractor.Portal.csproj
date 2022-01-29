@@ -84,6 +84,7 @@
     <Compile Include="Validation.cs" />
     <Compile Include="VaultApplication.cs" />
     <Compile Include="VaultAutomaticTransition.cs" />
+    <Compile Include="VaultBackground.cs" />
     <Compile Include="VaultEventHandler.cs" />
     <Compile Include="VaultStateAction.cs" />
   </ItemGroup>
