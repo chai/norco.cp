@@ -125,11 +125,7 @@ namespace Norco.Contractor.Portal
                 var uploaderEmailAddress = env.ObjVerEx.GetPropertyText(Configuration.UploaderEmailAddress);
                 if (!uploaderEmailAddress.Equals(String.Empty))
                 {
-                    var searchBuilder = new MFSearchBuilder(env.Vault);
-                    searchBuilder.ObjType(Configuration.EmployeeContractorObject);
-                    searchBuilder.Class(Configuration.EmployeeContractorClass);
-                    searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, uploaderEmailAddress);
-                    var uploader = searchBuilder.FindOneEx();
+                   var uploader= FindContractorByEmail(env.Vault, uploaderEmailAddress);
                     if (uploader != null)
                     {
                         typedValue.SetValue(MFDataType.MFDatatypeLookup, uploader.ID);
@@ -140,6 +136,23 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex) { }
             return typedValue;
+        }
+
+        private ObjVerEx FindContractorByEmail(Vault vault, string email)
+        {
+            try
+            {
+                var searchBuilder = new MFSearchBuilder(vault);
+                searchBuilder.ObjType(Configuration.EmployeeContractorObject);
+                searchBuilder.Class(Configuration.EmployeeContractorClass);
+                searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, email);
+                return searchBuilder.FindOneEx();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return null;
         }
 
             [PropertyCustomValue("PD.Valid", Priority = 500)]

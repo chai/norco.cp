@@ -122,6 +122,9 @@ namespace Norco.Contractor.Portal
         public MFIdentifier EmployeeContractorObject { get; set; }
             = "OT.Contractor";
 
+        [MFObjType(Required = true)]
+        public MFIdentifier ContractorCompanyObject { get; set; }
+    = "OT.Company";
 
 
         #endregion
@@ -138,7 +141,9 @@ namespace Norco.Contractor.Portal
         [MFClass(Required = true)]
         public MFIdentifier EmployeeContractorClass { get; set; }
             = "CL.Employee_Contractor";
-
+        [MFClass(Required = true)]
+        public MFIdentifier ContractorCompanyClass { get; set; }
+    = "CL.Company";
 
         #endregion
 
@@ -293,7 +298,14 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier BlacklistedUntil { get; set; }
 = "PD.BlacklistedUntil";
-        
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier SignerGroup { get; set; }
+= "PD.SignerGroup";
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier InductionHubName { get; set; }
+= "PD.InductionHubName";
+
 
                 [MFPropertyDef(Required = true)]
         public MFIdentifier ReplacementDocument { get; set; }
@@ -302,7 +314,13 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier EmployeeContractorEmail { get; set; }
 = "PD.EmployeeContractorEmail";
-        
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier CompanyTitle { get; set; }
+= "PD.CompanyTitle";
+
+
+
         [DataMember]
         public ObjectsToUpdate TaskConfig { get; set; }
         = new ObjectsToUpdate();
