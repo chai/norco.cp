@@ -17,9 +17,9 @@ namespace Norco.Contractor.Portal
             FoundInvalid=2,
             Missing=3
         }
-
-
-        [PropertyCustomValue("PD.DocumentationStatus")]
+        
+        //Note: Dependecy on IsValid?
+        [PropertyCustomValue("PD.DocumentationStatus", Priority =100)]
         public TypedValue DocumentationStatus(PropertyEnvironment env)
         {
             String missingDocumnt = env.ObjVerEx.Title;
@@ -85,7 +85,37 @@ namespace Norco.Contractor.Portal
             return typedValue;
         }
 
-            [PropertyCustomValue("PD.DocumentUploadedBy")]
+
+        [PropertyCustomValue("PD.Blacklisted")]
+        public TypedValue setBlacklisted(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+            typedValue.SetValue(MFDataType.MFDatatypeBoolean, false);
+
+            try
+            {
+
+
+                var blackListUntil = env.ObjVerEx.GetProperty(Configuration.BlacklistedUntil).GetValueAsTextEx(true, true, true, true, true, true, true);
+                if (!blackListUntil.Equals(String.Empty))
+                {
+
+                   var dueDate = Convert.ToDateTime(blackListUntil);
+                    var t = dueDate <= DateTime.Now;
+                        typedValue.SetValue(MFDataType.MFDatatypeBoolean, dueDate > DateTime.Now);
+                    
+                }
+
+
+            }
+            catch (Exception ex) { }
+            return typedValue;
+        }
+
+
+
+
+        [PropertyCustomValue("PD.DocumentUploadedBy")]
         public TypedValue setupUploaderBasedOnEmail(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();
@@ -112,7 +142,7 @@ namespace Norco.Contractor.Portal
             return typedValue;
         }
 
-            [PropertyCustomValue("PD.Valid")]
+            [PropertyCustomValue("PD.Valid", Priority = 500)]
         public TypedValue isDocumentValid(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();

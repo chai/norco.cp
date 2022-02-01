@@ -281,13 +281,21 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DocumentUploaded { get; set; }
 = "PD.AllowUpload";
 
+        
         [MFPropertyDef(Required = true)]
         public MFIdentifier ValidatedBy { get; set; }
 = "PD.ValidatedBy";
 
-
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier Blacklisted { get; set; }
+= "PD.Blacklisted";
 
         [MFPropertyDef(Required = true)]
+        public MFIdentifier BlacklistedUntil { get; set; }
+= "PD.BlacklistedUntil";
+        
+
+                [MFPropertyDef(Required = true)]
         public MFIdentifier ReplacementDocument { get; set; }
 = "PD.ReplacementDocument";
 
@@ -325,11 +333,16 @@ namespace Norco.Contractor.Portal
         [JsonConfEditor(DefaultValue = MFAuthType.MFAuthTypeSpecificMFilesUser)]
         public MFAuthType AuthType { get; set; }
 
-        //[DataMember]
-        //public List<SearchConditionsJA> FilterForObjects { get; set; }
+        [DataMember]
+        public SearchConditionsJA IsValudFilter { get; set; }
+
+
+        [DataMember]
+        public SearchConditionsJA IsBlacklistFilter { get; set; }
 
 
     }
 
-    
+
+
 }
