@@ -233,7 +233,7 @@ namespace Norco.Contractor.Portal
             {
                 env.ObjVerEx.SetProperty(Configuration.DateOfIssue, MFDataType.MFDatatypeDate, DateTime.Now);
 
-                env.ObjVerEx.SetProperty(Configuration.DateOfExpiry, MFDataType.MFDatatypeDate, DateTime.Now.AddYears(1));
+                env.ObjVerEx.SetProperty(Configuration.DateOfExpiry, MFDataType.MFDatatypeDate, DateTime.Now.AddMonths(Configuration.InductionExpiryInMonth));
 
                 env.ObjVerEx.SaveProperties();
             }
