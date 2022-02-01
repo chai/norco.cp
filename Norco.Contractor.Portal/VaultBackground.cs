@@ -133,23 +133,23 @@ namespace Norco.Contractor.Portal
                 var searchBuilder = new MFSearchBuilder(vault);
                 // Create our search builder.
 
-                foreach (var updateConditions in Configuration.FilterForObjects)
-                {
-                    var builder = new MFSearchBuilder(vault, updateConditions.ToApiObject(vault));
+                //foreach (var updateConditions in Configuration.FilterForObjects)
+                //{
+                //    var builder = new MFSearchBuilder(vault, updateConditions.ToApiObject(vault));
 
 
 
-                    // Find items.
+                //    // Find items.
 
-                    var foundObjects= builder.FindEx();
-                    if (foundObjects != null || foundObjects.Count>0)
-                    {
-                        foreach(var objverex in foundObjects)
-                        {
-                            UpdateFoundObject(objverex, vault);
-                        }
-                    }
-                }
+                //    var foundObjects= builder.FindEx();
+                //    if (foundObjects != null || foundObjects.Count>0)
+                //    {
+                //        foreach(var objverex in foundObjects)
+                //        {
+                //            UpdateFoundObject(objverex, vault);
+                //        }
+                //    }
+                //}
 
 
             }
