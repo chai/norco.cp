@@ -359,6 +359,12 @@ namespace Norco.Contractor.Portal
         public SearchConditionsJA IsBlacklistFilter { get; set; }
 
 
+        [DataMember]
+        [JsonConfEditor(DefaultValue = 12)]
+        public int InductionExpiryInMonth = 12;
+
+
+
     }
 
 
