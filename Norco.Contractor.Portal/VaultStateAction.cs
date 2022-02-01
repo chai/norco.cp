@@ -176,7 +176,7 @@ namespace Norco.Contractor.Portal
         {
 
 
-            UpdateObject(env.Vault, out bool bob);
+          UpdateObject(env.Vault, out bool bob);
 
             //var searchBuilder = new MFSearchBuilder(env.Vault);
             //searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);

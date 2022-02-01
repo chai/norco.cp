@@ -10,7 +10,7 @@ namespace Norco.Contractor.Portal
 {
     public partial class VaultApplication
     {
-
+        /*
         protected override void StartApplication()
 
         {
@@ -108,11 +108,11 @@ namespace Norco.Contractor.Portal
                });
 
 
-
+            
 
 
         }
-
+        */
         private bool UpdateObject(Vault vault, out bool currentlyExporting)
         {
             try
@@ -133,7 +133,7 @@ namespace Norco.Contractor.Portal
                 var searchBuilder = new MFSearchBuilder(vault);
                 // Create our search builder.
 
-                foreach (var updateConditions in Configuration.TaskConfig.FilterForObjects)
+                foreach (var updateConditions in Configuration.FilterForObjects)
                 {
                     var builder = new MFSearchBuilder(vault, updateConditions.ToApiObject(vault));
 

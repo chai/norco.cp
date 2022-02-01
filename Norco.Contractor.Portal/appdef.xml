@@ -7,9 +7,9 @@
   <name>Norco.Contractor.Portal</name>
   <description></description>
   <publisher></publisher>
-  <version>0.8.1</version>
+  <version>0.8.7</version>
   <copyright></copyright>
-  <required-mfiles-version>20.5.0.0</required-mfiles-version>
+  <required-mfiles-version>21.5.0.0</required-mfiles-version>
   <multi-server-compatible>false</multi-server-compatible>
   <extension-objects>
     <extension-object>
