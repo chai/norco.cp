@@ -22,6 +22,7 @@ namespace Norco.Contractor.Portal
         [PropertyCustomValue("PD.DocumentationStatus")]
         public TypedValue DocumentationStatus(PropertyEnvironment env)
         {
+            String missingDocumnt = env.ObjVerEx.Title;
             TypedValue typedValue = new TypedValue();
             typedValue.SetValue(MFDataType.MFDatatypeLookup, 1);
             try
@@ -34,18 +35,23 @@ namespace Norco.Contractor.Portal
                     {
                         foreach (var certDoc in certDocList.CertificationDocument)
                         {
+
                             var documentState = FoundDocument(env.ObjVerEx, env.Vault, certDoc);
-                            if (documentState != DocumentStatus.FoundValid)
+                            if (documentState == DocumentStatus.Missing)
                             {
 
+                                missingDocumnt = $"{missingDocumnt}{Environment.NewLine}{env.Vault.ClassOperations.GetObjectClass(certDoc).Name}";
+                                
                                 typedValue.SetValue(MFDataType.MFDatatypeLookup, (int)documentState);// expired
-                                return typedValue;
+                               
 
                             }
                            
                             //valid  eact document
                         }
                     }
+                    SysUtils.ReportToEventLog(missingDocumnt, System.Diagnostics.EventLogEntryType.Information);
+                    return typedValue;
                 }
 
                 //   return ValidateDate(env.ObjVerEx.GetProperty(Configuration.DateOfIssue), env.PropertyValue, ref message);
@@ -206,6 +212,7 @@ namespace Norco.Contractor.Portal
                 var searchResults = searchBuilder.FindEx();
                 if (searchResults == null)
                 {
+
                     return DocumentStatus.Missing;
                 }
                 foreach (var docObjVerEx in searchResults)
