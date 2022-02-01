@@ -226,7 +226,22 @@ namespace Norco.Contractor.Portal
 
 
 
+        [StateAction("WFS.DocusignWorkflow.Signed")]
+        public void SetInductionDate(StateEnvironment env)
+        {
+            try
+            {
+                env.ObjVerEx.SetProperty(Configuration.DateOfIssue, MFDataType.MFDatatypeDate, DateTime.Now);
 
+                env.ObjVerEx.SetProperty(Configuration.DateOfExpiry, MFDataType.MFDatatypeDate, DateTime.Now.AddYears(1));
+
+                env.ObjVerEx.SaveProperties();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
 
         public void CreateReplacementDocument(StateEnvironment env)
