@@ -22,7 +22,7 @@ namespace Norco.Contractor.Portal
         [PropertyCustomValue("PD.DocumentationStatus", Priority =100)]
         public TypedValue DocumentationStatus(PropertyEnvironment env)
         {
-            String missingDocumnt = env.ObjVerEx.Title;
+            String missingDocumnt = String.Empty;
             TypedValue typedValue = new TypedValue();
             typedValue.SetValue(MFDataType.MFDatatypeLookup, 1);
             try
@@ -50,7 +50,11 @@ namespace Norco.Contractor.Portal
                             //valid  eact document
                         }
                     }
-                    SysUtils.ReportToEventLog(missingDocumnt, System.Diagnostics.EventLogEntryType.Information);
+                    if(missingDocumnt!=String.Empty)
+                    {
+                        env.ObjVerEx.SaveProperty(Configuration.MissingDocuments, MFDataType.MFDatatypeMultiLineText, missingDocumnt);
+                    }
+                   // SysUtils.ReportToEventLog(missingDocumnt, System.Diagnostics.EventLogEntryType.Information);
                     return typedValue;
                 }
 

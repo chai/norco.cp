@@ -364,6 +364,10 @@ namespace Norco.Contractor.Portal
         public int InductionExpiryInMonth = 12;
 
 
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier MissingDocuments { get; set; }
+= "PD.MissingDocuments";
+        
 
     }
 
