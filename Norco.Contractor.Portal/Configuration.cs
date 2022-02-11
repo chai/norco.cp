@@ -6,6 +6,8 @@ using MFilesAPI;
 
 namespace Norco.Contractor.Portal
 {
+
+
     [DataContract]
     public class DocumentEmail
     {
@@ -156,6 +158,13 @@ namespace Norco.Contractor.Portal
         [MFWorkflow]
         public MFIdentifier WorkflowDocumentExpiry { get; set; }
        = "WF.ContractorDocStatus";
+
+
+        [MFWorkflow]
+        public MFIdentifier WorkflowDocusignTemplate { get; set; }
+= "WF.DocusignTemplate";
+
+        
         #endregion
 
         #region Workflow State

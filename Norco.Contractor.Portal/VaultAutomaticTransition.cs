@@ -129,48 +129,6 @@ namespace Norco.Contractor.Portal
 
         //}
 
-        private void CopyObjectFiles(Vault vault, ObjectFiles ObjFilesToCopy, ObjVer ObjVerToCopyTo)
-        {
-            try
-            {
-                foreach (ObjectFile ObjFile in ObjFilesToCopy)
-                {
-                    var TargetFileVer = vault.ObjectFileOperations.AddEmptyFile(ObjVerToCopyTo, ObjFile.Title, ObjFile.Extension);
-                    int upload_id = vault.ObjectFileOperations.UploadFileBlockBegin();
-
-                    FileDownloadSession DownloadSession = null;
-                    DownloadSession = vault.ObjectFileOperations.DownloadFileInBlocks_Begin(ObjFile.ID, ObjFile.Version);
-
-                    var download_id = DownloadSession.DownloadID;
-                    long filesize = DownloadSession.FileSize;
-
-                    int blockSize = 15 * 64 * 1024; // Magic number from samppa example
-                    byte[] buffer;
-                    long totalCopied = 0;
-                    long offset = 0;
-
-                    while (filesize > totalCopied && download_id != 0)
-                    {
-                        // Get block of data
-                        buffer = vault.ObjectFileOperations.DownloadFileInBlocks_ReadBlock(download_id, blockSize, offset);
-
-                        // Upload block of data
-                        vault.ObjectFileOperations.UploadFileBlock(upload_id, buffer.LongLength, offset, buffer);
-
-                        // Calculate a new offset and total downloaded size.
-                        offset = offset + buffer.LongLength;
-                        totalCopied = totalCopied + buffer.LongLength;
-                    }
-                    vault.ObjectFileOperations.UploadFileCommit(upload_id, TargetFileVer.ID, TargetFileVer.Version, filesize);
-                    vault.ObjectFileOperations.CloseUploadSession(upload_id);
-                }
-            }
-            catch (Exception e)
-            {
-                //Not loging usual error to Windows Event per M-File cloud requirement
-                //Log SysUtils.ReportErrorToEventLog(e);
-            }
-        }
-
+      
     }
 }

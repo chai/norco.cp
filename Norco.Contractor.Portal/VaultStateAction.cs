@@ -94,12 +94,6 @@ namespace Norco.Contractor.Portal
         }
 
 
-        [StateAction("WFS.DocumentExpiryNotification.30Days")]
-        public void DocumentExpiredIn30DaysEmailNotification(StateEnvironment env)
-        {
-
-        }
-
         [StateAction("WFS.DocumentExpiryNotification.7Days")]
         public void DocumentExpiredIn7DaysEmailNotification(StateEnvironment env)
         {

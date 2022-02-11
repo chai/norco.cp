@@ -14,7 +14,6 @@ namespace Norco.Contractor.Portal
     public partial class VaultApplication
     {
 
-
         private bool IsValidEmail(string email)
         {
             try
@@ -27,11 +26,6 @@ namespace Norco.Contractor.Portal
                 return false;
             }
         }
-
-
-
-
-
 
         private void SendEmail(int NumberOfDays, bool expired, StateEnvironment env)
         {

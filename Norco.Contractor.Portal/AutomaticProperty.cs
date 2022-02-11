@@ -12,17 +12,13 @@ namespace Norco.Contractor.Portal
     public partial class VaultApplication
     {
 
-         public enum DocumentStatus{
-            FoundValid=1,
-            FoundInvalid=2,
-            Missing=3
-        }
-        
+
         //Note: Dependecy on IsValid?
         [PropertyCustomValue("PD.DocumentationStatus", Priority =100)]
         public TypedValue DocumentationStatus(PropertyEnvironment env)
         {
-            String missingDocumnt = String.Empty;
+            StringBuilder sb = new StringBuilder();
+            
             TypedValue typedValue = new TypedValue();
             typedValue.SetValue(MFDataType.MFDatatypeLookup, 1);
             try
@@ -40,7 +36,7 @@ namespace Norco.Contractor.Portal
                             if (documentState == DocumentStatus.Missing)
                             {
 
-                                missingDocumnt = $"{missingDocumnt}{Environment.NewLine}{env.Vault.ClassOperations.GetObjectClass(certDoc).Name}";
+                                sb.AppendLine($"{env.Vault.ClassOperations.GetObjectClass(certDoc).Name}");
                                 
                                 typedValue.SetValue(MFDataType.MFDatatypeLookup, (int)documentState);// expired
                                
@@ -50,9 +46,9 @@ namespace Norco.Contractor.Portal
                             //valid  eact document
                         }
                     }
-                    if(missingDocumnt!=String.Empty)
+                    if(sb.Length>0)
                     {
-                        env.ObjVerEx.SaveProperty(Configuration.MissingDocuments, MFDataType.MFDatatypeMultiLineText, missingDocumnt);
+                        env.ObjVerEx.SaveProperty(Configuration.MissingDocuments, MFDataType.MFDatatypeMultiLineText, sb.ToString());
                     }
                    // SysUtils.ReportToEventLog(missingDocumnt, System.Diagnostics.EventLogEntryType.Information);
                     return typedValue;
@@ -142,24 +138,8 @@ namespace Norco.Contractor.Portal
             return typedValue;
         }
 
-        private ObjVerEx FindContractorByEmail(Vault vault, string email)
-        {
-            try
-            {
-                var searchBuilder = new MFSearchBuilder(vault);
-                searchBuilder.ObjType(Configuration.EmployeeContractorObject);
-                searchBuilder.Class(Configuration.EmployeeContractorClass);
-                searchBuilder.Property(Configuration.EmailAddress, MFDataType.MFDatatypeText, email);
-                return searchBuilder.FindOneEx();
-            }
-            catch(Exception ex)
-            {
 
-            }
-            return null;
-        }
-
-            [PropertyCustomValue("PD.Valid", Priority = 500)]
+        [PropertyCustomValue("PD.Valid", Priority = 500)]
         public TypedValue isDocumentValid(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();
@@ -209,6 +189,7 @@ namespace Norco.Contractor.Portal
             }
             return typedValue;
         }
+ 
         [PropertyCustomValue("PD.EmployeeContractorEmail")]
         public TypedValue EmployeeContractorEmail(PropertyEnvironment env)
         {
@@ -229,62 +210,7 @@ namespace Norco.Contractor.Portal
 
             return typedValue;
         }
-            private DocumentStatus FoundDocument(ObjVerEx contractor, Vault vault, MFIdentifier certDoc)
-        {
-            try
-            {
-                // Create our search builder.
-
-                var searchBuilder = new MFSearchBuilder(vault);
-
-
-
-                // Add an object type filter.
-
-                searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
-                searchBuilder.Class(certDoc);
-                //  searchBuilder.Property(Configuration.IsDocumentValid, MFDataType.MFDatatypeBoolean, isValid);
-
-                searchBuilder.Property(Configuration.ContractorsForCompany, MFDataType.MFDatatypeLookup, contractor.ID);
-
-
-                // Add a "not deleted" filter.
-
-                searchBuilder.Deleted(false);
-
-
-
-                // Execute the search.
-
-                var searchResults = searchBuilder.FindEx();
-                if (searchResults == null)
-                {
-
-                    return DocumentStatus.Missing;
-                }
-                foreach (var docObjVerEx in searchResults)
-                {
-                    string isValidString = docObjVerEx.GetProperty(Configuration.IsDocumentValid).Value.DisplayValue;
-                    if (isValidString.ToLower().Equals("yes"))
-                    {
-                        return DocumentStatus.FoundValid;
-                    }
-                    else
-                    {
-                        return DocumentStatus.FoundInvalid;
-                    }
-                }
-
-                
-                
-
-            }
-            catch(Exception ex)
-            {
-   
-            }
-            return DocumentStatus.Missing;
-        }
+        
     }
 
 
