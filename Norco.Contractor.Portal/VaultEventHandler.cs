@@ -33,7 +33,7 @@ namespace Norco.Contractor.Portal
                         if (uploader != null)
                         {
                             propertyValues.SetProperty(Configuration.SignerGroup, MFDataType.MFDatatypeMultiSelectLookup, uploader.ID);
-                            propertyValues.SetProperty(Configuration.ContractorsForCompany, MFDataType.MFDatatypeLookup, uploader.ID);
+                            propertyValues.SetProperty(Configuration.ContractorsForCompany, MFDataType.MFDatatypeMultiSelectLookup, uploader.ID);
 
                             updated = true;
                         }
@@ -49,7 +49,7 @@ namespace Norco.Contractor.Portal
                             var company = FindCompanyBasedOnName(env.Vault, companyName);
                             if (company != null)
                             {
-                                propertyValues.SetProperty(Configuration.CompanyOfContractor, MFDataType.MFDatatypeLookup, company.ID);
+                                propertyValues.SetProperty(Configuration.CompanyOfContractor, MFDataType.MFDatatypeMultiSelectLookup, company.ID);
                                 updated = true;
                             }
 

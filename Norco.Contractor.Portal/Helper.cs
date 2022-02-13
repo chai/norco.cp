@@ -50,7 +50,7 @@ namespace Norco.Contractor.Portal
                 searchBuilder.Class(certDoc);
                 //  searchBuilder.Property(Configuration.IsDocumentValid, MFDataType.MFDatatypeBoolean, isValid);
 
-                searchBuilder.Property(Configuration.ContractorsForCompany, MFDataType.MFDatatypeLookup, contractor.ID);
+                searchBuilder.Property(Configuration.ContractorsForCompany, MFDataType.MFDatatypeMultiSelectLookup, contractor.ID);
 
 
                 // Add a "not deleted" filter.
