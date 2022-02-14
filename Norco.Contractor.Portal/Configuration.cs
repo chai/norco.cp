@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using MFiles.VAF.Configuration.JsonAdaptor;
 using MFilesAPI;
+using MFiles.VAF.Extensions;
+using System;
 
 namespace Norco.Contractor.Portal
 {
@@ -376,8 +378,29 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier MissingDocuments { get; set; }
 = "PD.MissingDocuments";
-        
 
+
+
+
+        // The import will run every hour  but can be configured via the M-Files Admin software.
+
+        [DataMember]
+
+        [RecurringOperationConfiguration
+
+        (
+
+            VaultApplication.QueueId,
+
+            VaultApplication.ImportDataFromRemoteSystemTaskType,
+
+            Label = "Import Frequency",
+
+            DefaultValue = "Once per hour"
+
+        )]
+
+        public Frequency Frequency { get; set; } = TimeSpan.FromHours(1);
     }
 
 

@@ -57,6 +57,9 @@
     <Reference Include="MFiles.VAF.Configuration.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa007b370d17fe5e, processorArchitecture=MSIL">
       <HintPath>..\packages\MFiles.VAF.Configuration.21.11.3\lib\net45\MFiles.VAF.Configuration.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="MFiles.VAF.Extensions, Version=1.3.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MFiles.VAF.Extensions.1.3.1.3\lib\net45\MFiles.VAF.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="MFilesAPI.Extensions, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MFilesAPI.Extensions.1.0.6\lib\net45\MFilesAPI.Extensions.dll</HintPath>
     </Reference>

@@ -5,11 +5,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MFiles.VAF.Extensions.Dashboards;
+using MFiles.VAF.AppTasks;
 
 namespace Norco.Contractor.Portal
 {
     public partial class VaultApplication
     {
+
+
+        [TaskQueue]
+
+        public const string QueueId = "sampleApplication.VaultApplication";
+
+        public const string ImportDataFromRemoteSystemTaskType = "ImportDataFromRemoteSystem";
+
+
+
+        [TaskProcessor(QueueId, ImportDataFromRemoteSystemTaskType)]
+
+        [ShowOnDashboard("Import data from web service", ShowRunCommand = true)]
+        public void ImportDataFromRemoteSystem(ITaskProcessingJob<TaskDirective> job)
+
+        {
+
+
+
+            // TODO: Connect to the remote system and import data.
+            job.Commit((transactionalVault) =>
+            {
+                SysUtils.ReportInfoToEventLog("System run");
+
+            });
+        }
+
+
         /*
         protected override void StartApplication()
 

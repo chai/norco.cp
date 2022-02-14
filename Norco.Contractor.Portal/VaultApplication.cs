@@ -7,6 +7,7 @@ using MFiles.VAF.Configuration;
 using MFiles.VAF.Core;
 using MFilesAPI;
 
+
 namespace Norco.Contractor.Portal
 {
     /// <summary>
@@ -14,7 +15,7 @@ namespace Norco.Contractor.Portal
     /// </summary>
     /// <remarks>Examples and further information available on the developer portal: http://developer.m-files.com/. </remarks>
     public partial class VaultApplication
-        : ConfigurableVaultApplicationBase<Configuration>
+        : MFiles.VAF.Extensions.ConfigurableVaultApplicationBase<Configuration>
     {
         /// <inheritdoc />
         public override void StartOperations(Vault vaultPersistent)
@@ -24,6 +25,8 @@ namespace Norco.Contractor.Portal
             // An instance of the current configuration can be found in this.Configuration.
             //SysUtils.ReportInfoToEventLog(this.Configuration.ConfigValue1);
         }
+
+       
 
 
     }
