@@ -174,7 +174,7 @@ namespace Norco.Contractor.Portal
 
 
 
-        [PropertyCustomValue("PD.Test")]
+        [PropertyCustomValue("PD.TestAutoproperty")]
         public TypedValue Test(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();

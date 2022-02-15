@@ -376,6 +376,11 @@ namespace Norco.Contractor.Portal
 
 
         [MFPropertyDef(Required = true)]
+        public MFIdentifier TestText { get; set; }
+= "PD.TestText";
+
+
+        [MFPropertyDef(Required = true)]
         public MFIdentifier MissingDocuments { get; set; }
 = "PD.MissingDocuments";
 
@@ -392,9 +397,9 @@ namespace Norco.Contractor.Portal
 
             VaultApplication.QueueId,
 
-            VaultApplication.ImportDataFromRemoteSystemTaskType,
+            VaultApplication.UpdateDocumentTaskType,
 
-            Label = "Import Frequency",
+            Label = "Update Frequency",
 
             DefaultValue = "Once per hour"
 
