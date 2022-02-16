@@ -333,6 +333,10 @@ namespace Norco.Contractor.Portal
 
 
         [DataMember]
+        public MFIdentifier PropertyToTouch { get; set; }
+
+
+        [DataMember]
         public ObjectsToUpdate TaskConfig { get; set; }
         = new ObjectsToUpdate();
 
@@ -375,9 +379,7 @@ namespace Norco.Contractor.Portal
         public int InductionExpiryInMonth = 12;
 
 
-        [MFPropertyDef(Required = true)]
-        public MFIdentifier TestText { get; set; }
-= "PD.TestText";
+
 
 
         [MFPropertyDef(Required = true)]

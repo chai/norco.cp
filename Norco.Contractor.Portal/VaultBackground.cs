@@ -117,7 +117,7 @@ namespace Norco.Contractor.Portal
             {
                 if (objVerEx != null)
                 {
-                    objVerEx.SaveProperty(Configuration.TestText, MFDataType.MFDatatypeMultiLineText, $"Updated {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    objVerEx.SaveProperty(Configuration.PropertyToTouch, MFDataType.MFDatatypeText, $"Last Updated: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch(Exception ex)
