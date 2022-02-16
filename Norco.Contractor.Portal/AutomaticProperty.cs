@@ -181,7 +181,7 @@ namespace Norco.Contractor.Portal
             typedValue.SetValue(MFDataType.MFDatatypeText, false);
             try
             {
-                typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongTimeString()}");
+                typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongDateString()} -  {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception ex)
             {

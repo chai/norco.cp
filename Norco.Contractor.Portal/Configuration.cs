@@ -40,24 +40,24 @@ namespace Norco.Contractor.Portal
     }
 
 
-    [DataContract]
-    public class ObjectsToUpdate
-    {
-        [DataMember]
-        [JsonConfEditor(DefaultValue = 12)]
-        public int AutoCalculatePolling = 12;
+    //[DataContract]
+    //public class ObjectsToUpdate
+    //{
+    //    [DataMember]
+    //    [JsonConfEditor(DefaultValue = 12)]
+    //    public int AutoCalculatePolling = 12;
 
-        [DataMember]
-        [JsonConfEditor(DefaultValue = 2)]
-        public int AutoCalculateAtTime = 2;
-
-
-        [DataMember]
-        [JsonConfEditor(DefaultValue = false)]
-        public bool StartAutoCalculatePolling = false;
+    //    [DataMember]
+    //    [JsonConfEditor(DefaultValue = 2)]
+    //    public int AutoCalculateAtTime = 2;
 
 
-    }
+    //    [DataMember]
+    //    [JsonConfEditor(DefaultValue = false)]
+    //    public bool StartAutoCalculatePolling = false;
+
+
+    //}
     
     [DataContract]
     public class RenewalDocument
@@ -332,49 +332,34 @@ namespace Norco.Contractor.Portal
 
 
 
-        [DataMember]
-        public MFIdentifier PropertyToTouch { get; set; }
+        //[DataMember]
+        //[MFPropertyDef(Required = true)]
+        //public MFIdentifier PropertyToTouch { get; set; }
+
+
+        //[DataMember]
+        //public ObjectsToUpdate TaskConfig { get; set; }
+        //= new ObjectsToUpdate();
+
+
 
 
         [DataMember]
-        public ObjectsToUpdate TaskConfig { get; set; }
-        = new ObjectsToUpdate();
+
+        [Security(ChangeBy = SecurityAttribute.UserLevel.VaultAdmin)]
+        public SearchConditionsJA IsDocumentFilter { get; set; }
 
 
-        [DataMember]
-        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = "{6A203C49-C4F8-4F25-AE2E-8C557FDBD3CF}")]
-        public string VaultGUID = @"{6A203C49-C4F8-4F25-AE2E-8C557FDBD3CF}";
+        //[DataMember]
+        //public SearchConditionsJA IsEmployeeCompanyFilter { get; set; }
 
-        [DataMember]
-        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = "")]
-        public string Domain = @"";
 
-        [DataMember]
-        [Security(IsPassword = true, ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = @"")]
-        public string MFilesPassword { get; set; } = @"";
 
-        [DataMember]
-        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = @"")]
-        public string MFilesUsername = @"";
-
-        [DataMember]
-        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = MFAuthType.MFAuthTypeSpecificMFilesUser)]
-        public MFAuthType AuthType { get; set; }
-
-        [DataMember]
-        public SearchConditionsJA IsValudFilter { get; set; }
 
 
         [DataMember]
-        public SearchConditionsJA IsBlacklistFilter { get; set; }
 
-
-        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.VaultAdmin)]
         [JsonConfEditor(DefaultValue = 12)]
         public int InductionExpiryInMonth = 12;
 
@@ -408,6 +393,14 @@ namespace Norco.Contractor.Portal
         )]
 
         public Frequency Frequency { get; set; } = TimeSpan.FromHours(1);
+
+
+//        [MFPropertyDef(Required = true)]
+//        public MFIdentifier TestAutoproperty { get; set; }
+//= "PD.TestAutoproperty";
+
+        
+
     }
 
 

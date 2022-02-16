@@ -28,87 +28,67 @@ namespace Norco.Contractor.Portal
         public void ImportDataFromRemoteSystem(ITaskProcessingJob<TaskDirective> job)
 
         {
-            var builder = new MFSearchBuilder(job.Vault, this.Configuration.IsValudFilter.ToApiObject(job.Vault));
-
-
-            builder.Deleted(false);
-
-            // Find items.
-
-            var foundObjects = builder.FindEx();
-
-            if (foundObjects != null || foundObjects.Count > 0)
-            {
-                job.Commit((transactionalVault) =>
-                {
-                    foreach (var objverex in foundObjects)
-                    {
-
-
-                        UpdateFoundObject(objverex, job.Vault);
-
-                    }
-                });
-
-            }
-
-
-
-
-        }
-        // TODO: Connect to the remote system and import data.
-
-
-
-
-        private bool UpdateObject(Vault vault, out bool currentlyExporting)
-        {
             try
             {
-
-                //Search Criteria
-                /*
-                 
-                 iManageDocumentURL is empty
-                 Class != iManageDocumentClass
-                 */
-
-                currentlyExporting = true;
-
-
-                // Create our search builder.
-
-                var searchBuilder = new MFSearchBuilder(vault);
-                // Create our search builder.
-
-                //foreach (var updateConditions in Configuration.FilterForObjects)
+                //job.Commit((transactionalVault) =>
                 //{
-                //    var builder = new MFSearchBuilder(vault, updateConditions.ToApiObject(vault));
-
-
-
-                //    // Find items.
-
-                //    var foundObjects= builder.FindEx();
-                //    if (foundObjects != null || foundObjects.Count>0)
+                //    try
                 //    {
-                //        foreach(var objverex in foundObjects)
-                //        {
-                //            UpdateFoundObject(objverex, vault);
-                //        }
+                //        job.Vault.PropertyDefOperations.Recalculate(Configuration.TestAutoproperty.ID, false);
                 //    }
-                //}
+                //    catch(Exception ex)
+                //    {
+                //        SysUtils.ReportErrorToEventLog("Background task Runner - Suppressed", ex);
+                //        //M-Files error see here:
+                //        //https://www.m-files.com/api/documentation/#MFilesAPI~VaultPropertyDefOperations~Recalculate.html
+                //    }
+                //});
+
+
+                // Find items.
+
+                List<ObjVerEx> foundDocumentsObjects = FindObjVerExByFilter(job.Vault, this.Configuration.IsDocumentFilter.ToApiObject(job.Vault));
+
+           //     foundDocumentsObjects.AddRange(FindObjVerExByFilter(job.Vault, this.Configuration.IsDocumentFilter.ToApiObject(job.Vault)));
+
+
+
+
+
+
+
+                if (foundDocumentsObjects != null || foundDocumentsObjects.Count > 0)
+                {
+
+
+                        for (var i = 0; i < foundDocumentsObjects.Count; i++)
+                        {
+
+
+                            UpdateFoundObject(foundDocumentsObjects[i], job.Vault);
+
+                            job.Update(
+                            percentComplete: (int)Math.Ceiling((i + 1.00) / foundDocumentsObjects.Count * 100),
+                            details: $"Processing object {(i + 1)} / {foundDocumentsObjects.Count}"
+                            );
+                        }
+                    
+                    job.Commit((transactionalVault) =>
+                    {
+                    });
+                    job.Update(
+                        percentComplete: 100,
+                        details: $"Completed"
+                    );
+                }
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                currentlyExporting = false;
-                return false;
+                SysUtils.ReportErrorToEventLog("Background task Runner", ex);
             }
 
-            currentlyExporting = false;
-            return true;
         }
 
         private void UpdateFoundObject(ObjVerEx objVerEx, Vault vault)
@@ -117,12 +97,41 @@ namespace Norco.Contractor.Portal
             {
                 if (objVerEx != null)
                 {
-                    objVerEx.SaveProperty(Configuration.PropertyToTouch, MFDataType.MFDatatypeText, $"Last Updated: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-                }
+                    //PropertyValue pv = objVerEx.GetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment);
+                    //    objVerEx.CheckOut();
+                    //pv.TypedValue.SetValue(MFDataType.MFDatatypeMultiLineText, $"Check status by background task: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    //    objVerEx.SaveProperty(pv);
+                    //    objVerEx.CheckIn();
+
+
+
+                        objVerEx.SaveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment, MFDataType.MFDatatypeMultiLineText, $"Checked by background task at : {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    
+                    }
             }
             catch(Exception ex)
             {
                 SysUtils.ReportErrorToEventLog($"Document Background update: {objVerEx.Title} {objVerEx.ID}", ex);
+            }
+        }
+
+        private List<ObjVerEx> FindObjVerExByFilter(Vault vault, SearchConditions searchConditions)
+        {
+            try
+            {
+                var documentSearchBuilder = new MFSearchBuilder(vault, searchConditions);// this.Configuration.IsDocumentFilter.ToApiObject(vault));
+
+
+                documentSearchBuilder.Deleted(false);
+                var todayDate = new TypedValue();
+                todayDate.SetValue(MFDataType.MFDatatypeTimestamp, DateTime.Today);
+                documentSearchBuilder.Conditions.AddPropertyCondition((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefLastModified, MFConditionType.MFConditionTypeLessThan, todayDate);
+                // Find items.
+                return documentSearchBuilder.FindEx();
+            }
+            catch(Exception ex)
+            {
+                return null;
             }
         }
 
