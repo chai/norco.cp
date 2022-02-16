@@ -19,6 +19,13 @@ namespace Norco.Contractor.Portal
         [DataMember]
         public List<EmailBodyProperty> EmailProperties { get; set; }
 
+        [DataMember]
+        public string EmailTemplateName;
+
+
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText")]
+        public string EmailSubjectTextTemplate;
 
 
     }

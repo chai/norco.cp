@@ -123,9 +123,34 @@ namespace Norco.Contractor.Portal
 
 
                 documentSearchBuilder.Deleted(false);
-                var todayDate = new TypedValue();
-                todayDate.SetValue(MFDataType.MFDatatypeTimestamp, DateTime.Today);
-                documentSearchBuilder.Conditions.AddPropertyCondition((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefLastModified, MFConditionType.MFConditionTypeLessThan, todayDate);
+
+
+                var dataFunctionCall = new DataFunctionCall();
+
+                dataFunctionCall.SetDataDate(); // Ignore the time portion of the created timestamp.
+
+                // Create the condition.
+
+                var lastModifiedcondition = new SearchCondition();
+
+                // Set the expression.
+
+                lastModifiedcondition.Expression.SetPropertyValueExpression(
+
+                    (int)MFilesAPI.MFBuiltInPropertyDef.MFBuiltInPropertyDefLastModified,
+
+                    MFParentChildBehavior.MFParentChildBehaviorNone,
+
+                    dataFunctionCall
+
+                    );
+
+                // Set the condition type.
+                lastModifiedcondition.ConditionType = MFConditionType.MFConditionTypeLessThan;
+                // Set the value.
+                lastModifiedcondition.TypedValue.SetValue(MFDataType.MFDatatypeDate, DateTime.Today);
+                // Add the condition to the collection for searching.
+                documentSearchBuilder.Conditions.Add(-1, lastModifiedcondition);
                 // Find items.
                 return documentSearchBuilder.FindEx();
             }
