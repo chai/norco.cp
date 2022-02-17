@@ -174,21 +174,21 @@ namespace Norco.Contractor.Portal
 
 
 
-        [PropertyCustomValue("PD.TestAutoproperty")]
-        public TypedValue Test(PropertyEnvironment env)
-        {
-            TypedValue typedValue = new TypedValue();
-            typedValue.SetValue(MFDataType.MFDatatypeText, false);
-            try
-            {
-                typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongDateString()} -  {DateTime.Now.ToLongTimeString()}");
-            }
-            catch (Exception ex)
-            {
+        //[PropertyCustomValue("PD.TestAutoproperty")]
+        //public TypedValue Test(PropertyEnvironment env)
+        //{
+        //    TypedValue typedValue = new TypedValue();
+        //    typedValue.SetValue(MFDataType.MFDatatypeText, false);
+        //    try
+        //    {
+        //        typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongDateString()} -  {DateTime.Now.ToLongTimeString()}");
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-            return typedValue;
-        }
+        //    }
+        //    return typedValue;
+        //}
  
         [PropertyCustomValue("PD.EmployeeContractorEmail")]
         public TypedValue EmployeeContractorEmail(PropertyEnvironment env)

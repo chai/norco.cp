@@ -131,9 +131,11 @@ namespace Norco.Contractor.Portal
             catch (Exception e)
             {
                 //Not loging usual error to Windows Event per M-File cloud requirement
-                //Log SysUtils.ReportErrorToEventLog(e);
+                //Log
+                SysUtils.ReportErrorToEventLog(e);
             }
         }
+
 
         private ObjVerEx FindCompanyBasedOnName(Vault vault, string companyName)
         {
@@ -150,6 +152,27 @@ namespace Norco.Contractor.Portal
 
             }
             return null;
+        }
+
+
+        private ObjVerEx FindTemplate(Vault vault, MFIdentifier documentClass, string documentTemplateName)
+        {
+            try
+            {
+                // Create our search builder.
+                var searchBuilder = new MFSearchBuilder(vault);
+                searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
+                searchBuilder.Property(MFBuiltInPropertyDef.MFBuiltInPropertyDefIsTemplate, new TypedValue { Value = true });
+                searchBuilder.Class(documentClass);
+                searchBuilder.Property((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle, new TypedValue { Value = documentTemplateName });
+
+                // Execute the search.
+                return searchBuilder.FindOneEx();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

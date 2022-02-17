@@ -47,25 +47,7 @@ namespace Norco.Contractor.Portal
     }
 
 
-    //[DataContract]
-    //public class ObjectsToUpdate
-    //{
-    //    [DataMember]
-    //    [JsonConfEditor(DefaultValue = 12)]
-    //    public int AutoCalculatePolling = 12;
 
-    //    [DataMember]
-    //    [JsonConfEditor(DefaultValue = 2)]
-    //    public int AutoCalculateAtTime = 2;
-
-
-    //    [DataMember]
-    //    [JsonConfEditor(DefaultValue = false)]
-    //    public bool StartAutoCalculatePolling = false;
-
-
-    //}
-    
     [DataContract]
     public class RenewalDocument
     {
@@ -402,11 +384,28 @@ namespace Norco.Contractor.Portal
         public Frequency Frequency { get; set; } = TimeSpan.FromHours(1);
 
 
-//        [MFPropertyDef(Required = true)]
-//        public MFIdentifier TestAutoproperty { get; set; }
-//= "PD.TestAutoproperty";
+        [DataMember]
+        [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
+        [JsonConfEditor(DefaultValue = @"ClubPASS - Order Form - Medium Club - October 2021")]
+        public string TemplateName = @"ClubPASS - Order Form - Medium Club - October 2021";
 
-        
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier DocuSignTitle { get; set; }
+            = "PD.DocusignDocumentName";
+
+        [MFClass(Required = true)]
+        public MFIdentifier SignatureDetailsClass { get; set; }
+        = "CL.MemberContract";
+
+
+        [MFState(Required = true)]
+        public MFIdentifier DocusignUnsignedState { get; set; }
+        = "WFS.DocusignWorkflow.Unsigned";
+
+        [MFWorkflow(Required = true)]
+        public MFIdentifier DocusignWorkflow { get; set; }
+        = "WF.DocusignWorkflow";
+
 
     }
 

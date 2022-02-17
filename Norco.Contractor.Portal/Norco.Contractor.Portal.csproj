@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomaticProperty.cs" />
+    <Compile Include="VaultStateAction.DocuSign.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="EmailHelpers.cs" />
     <Compile Include="Helper.cs" />
