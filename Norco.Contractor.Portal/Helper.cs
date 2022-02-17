@@ -174,5 +174,62 @@ namespace Norco.Contractor.Portal
                 return null;
             }
         }
+
+        private MFPropertyValuesBuilder GenerateTemplateProperty(Vault vault, ObjVerEx documentObjverEx)
+        {
+            try
+            {
+                //Create PropertyValues
+                // Create a property values builder.
+                var mfPropertyValuesBuilder = new MFPropertyValuesBuilder(vault);
+
+                // Set the class property.
+                mfPropertyValuesBuilder.SetClass(Configuration.SignatureDetailsClass);
+
+                //Get Common properties
+                List<PropertyValue> commonProperties = documentObjverEx.Properties.OfType<PropertyValue>().Where(a => a.PropertyDef > 100).ToList();
+
+                ObjectClass LetterClass = vault.ClassOperations.GetObjectClass(Configuration.SignatureDetailsClass);
+                commonProperties.ForEach(a =>
+                {
+                    if (!LetterClass.AssociatedPropertyDefs.OfType<AssociatedPropertyDef>().Where(b => b.PropertyDef == a.PropertyDef).Any())
+                    {
+                        commonProperties.Remove(a);
+                    }
+                });
+
+                // Add a property value by alias.
+                commonProperties.ForEach(a => mfPropertyValuesBuilder.Add(a));
+
+                // Add reference to this enquiry
+                //  mfPropertyValuesBuilder.AddLookup(Configuration.EnquiriesID.ID, env.ObjVerEx.ObjVer);
+
+                mfPropertyValuesBuilder.SetTitle(documentObjverEx.Title);
+
+                return mfPropertyValuesBuilder;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+        private ObjVerEx CreateDocumentFromTemplate(Vault vault, ObjVerEx templateObjVerEx, MFPropertyValuesBuilder mfPropertyValuesBuilder)
+        {
+            try
+            {
+                ObjectFiles objTemplateFiles = vault.ObjectFileOperations.GetFiles(templateObjVerEx.ObjVer);
+                ObjVerEx newLetter = new ObjVerEx(vault, vault.ObjectOperations.CreateNewObject((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument, mfPropertyValuesBuilder.Values));
+                CopyObjectFiles(vault, objTemplateFiles, newLetter.ObjVer);
+                vault.ObjectOperations.SetSingleFileObject(newLetter.ObjVer, true);
+                vault.ObjectFileOperations.UpdateMetadataInFile(newLetter.ObjVer, -1, false);
+                newLetter.CheckIn();
+                return newLetter;
+            }catch(Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

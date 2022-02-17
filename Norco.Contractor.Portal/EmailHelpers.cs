@@ -36,64 +36,64 @@ namespace Norco.Contractor.Portal
             try
             {
 
-                    // Create a message.
-                    using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
-                    {
+                // Create a message.
+                using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
+                {
                     string ExpiryDate = "";
                     string IssueDate = "";
-                   if ( env.ObjVerEx.TryGetProperty(Configuration.DateOfExpiry, out PropertyValue ExpiryDateProperty))
+                    if (env.ObjVerEx.TryGetProperty(Configuration.DateOfExpiry, out PropertyValue ExpiryDateProperty))
                     {
                         ExpiryDate = ExpiryDateProperty.Value.DisplayValue;
                     }
-                  if(  env.ObjVerEx.TryGetProperty(Configuration.DateOfIssue, out PropertyValue IssueDateProperty))
+                    if (env.ObjVerEx.TryGetProperty(Configuration.DateOfIssue, out PropertyValue IssueDateProperty))
                     {
                         IssueDate = IssueDateProperty.Value.DisplayValue;
                     }
 
                     emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
 
-                        var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
-                        if(company!=null)
+                    var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
+                    if (company != null)
+                    {
+                        if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
                         {
-                            if(company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
+                            if (IsValidEmail(email1.Value.DisplayValue))
                             {
-                                if (IsValidEmail(email1.Value.DisplayValue))
-                                {
-                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email1.Value.DisplayValue);
-                                }
+                                emailMessage.AddRecipient(AddressType.CarbonCopy, email1.Value.DisplayValue);
                             }
-                            if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email2))
+                        }
+                        if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email2))
+                        {
+                            if (IsValidEmail(email2.Value.DisplayValue))
                             {
-                                if (IsValidEmail(email2.Value.DisplayValue))
-                                {
-                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email2.Value.DisplayValue);
-                                }
+                                emailMessage.AddRecipient(AddressType.CarbonCopy, email2.Value.DisplayValue);
                             }
-
                         }
 
+                    }
 
-                        var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
-                        if (contractor != null)
+
+                    var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
+                    if (contractor != null)
+                    {
+                        if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
                         {
-                            if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
+                            if (IsValidEmail(email1.Value.DisplayValue))
                             {
-                                if (IsValidEmail(email1.Value.DisplayValue))
-                                {
-                                    emailMessage.AddRecipient(AddressType.To, email1.Value.DisplayValue);
-                                }
-                            }                           
+                                emailMessage.AddRecipient(AddressType.To, email1.Value.DisplayValue);
+                            }
                         }
+                    }
 
 
                     emailMessage.AddRecipient(AddressType.CarbonCopy, Configuration.NorcoNotificationPerson);
 
 
 
-                    
-                var certificateProperties = GetCertificateProperty(env.ObjVerEx);
 
-                    if(expired)
+                    var certificateProperties = GetCertificateProperty(env.ObjVerEx);
+
+                    if (expired)
                     {
                         emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} has expired on {ExpiryDate}";
                         emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} has expired on {ExpiryDate}." +
@@ -106,7 +106,6 @@ namespace Norco.Contractor.Portal
                             $"Regards," +
                             $"<br>" +
                             $"Norco";
-
                     }
                     else
                     {
@@ -121,18 +120,13 @@ namespace Norco.Contractor.Portal
                                                     $"Regards," +
                                                     $"<br>" +
                                                     $"Norco";
-
                     }
-
-
-
                     // Add all files from the current object.
-
                     emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
-                        // Send the message.
-                        emailMessage.Send();
-                    }
-                
+                    // Send the message.
+                    emailMessage.Send();
+                }
+
             }
             catch (Exception ex)
             {

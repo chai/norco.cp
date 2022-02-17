@@ -17,55 +17,19 @@ namespace Norco.Contractor.Portal
         {
             try
             {
-                //env.ObjVerEx.Prop
-                ////       SendEmail(5, false, env);
-
-                //// Where "env" is the current environment passed
-                //// to the method.
-                ////env.ObjVerEx.SetCreatedBy(env.CurrentUserID);
-                ////env.ObjVerEx.SetModifiedBy(env.CurrentUserID);
-                //var propertyValues = new PropertyValues();
-                //propertyValues.Add(-1, new PropertyValue
-                //{
-                //    PropertyDef = (int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass
-                //}.Value.SetValue(MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass.ID));
-
-                //retPropValTxt(ref propertyValues, Configuration.APVoucherTaxRateArea, MFDataType.MFDatatypeLookup, item, TAXRATE);
-                //retPropValTxt(ref propertyValues, Configuration.APVoucherExplanationCode, MFDataType.MFDatatypeLookup, item, TAXEXPLCODE);
-                //retPropValTxt(ref propertyValues, Configuration.APVoucherOverride, MFDataType.MFDatatypeBoolean, item, OVERRIDE);
 
                 var propertyValues = env.ObjVerEx.Properties;
 
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefWorkflow,MFDataType.MFDatatypeLookup,Configuration.DocumentRequestWorkflow);
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequestState);
                 propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass);
-
                 propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
-
-
-
 
                 propertyValues.RemoveProperty(Configuration.IsDocumentValid);
                 propertyValues.RemoveProperty(Configuration.SingleFile);
                 propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefObjectID);
                 propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle);
-                //env.Vault.ObjectOperations.CreateNewObjectEx(
-                //    env.ObjVer.Type,
-                //    propertyValues,
-                //    CheckIn: true);
-                //SourceObjectFiles sourceObjectFiles = new SourceObjectFiles();
 
-                //sourceObjectFiles.Add(-1, new SourceObjectFile()
-
-                //{
-
-                //    Extension = "txt",
-
-                //    SourceFilePath = Configuration.PlaceHolderFile,
-
-                //    Title = $"Document Request for {env.ObjVerEx.Title}"
-
-                //});
 
                 
               var docRequest=  env.Vault.ObjectOperations.CreateNewObjectExQuick(                 
