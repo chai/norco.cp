@@ -36,6 +36,39 @@ namespace Norco.Contractor.Portal
             try
             {
 
+
+                //string emailBody = "";
+
+                //var mfPropertyValuesBuilder = GenerateTemplateProperty(env.Vault, env.ObjVerEx);                
+                //try
+                //{
+ 
+
+                //    var templateObjVerEx = FindTemplate(env.Vault, Configuration.SignatureDetailsClass, Configuration.TemplateName);
+                //    if (templateObjVerEx != null)
+                //    {
+
+                //        var newEmailNotification = CreateDocumentFromTemplate(env.Vault, templateObjVerEx, mfPropertyValuesBuilder);
+                //        List<emailInlineImage> CIDImages = new List<emailInlineImage>();
+                //        CIDImages.Add(new emailInlineImage()
+                //            { filepath = @"C:\norcoemmail\footer.jpeg", guid = env.ObjVerEx.Info.VersionGUID, type = "jpeg" });
+                      
+                //        emailBody = getEmailContent(env.Vault, newEmailNotification, "email notification", CIDImages);
+
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("Could not find Template");
+                //    }
+
+                //}
+                //catch (Exception ex)
+                //{ }
+
+
+
+
+
                 // Create a message.
                 using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
                 {
@@ -93,36 +126,40 @@ namespace Norco.Contractor.Portal
 
                     var certificateProperties = GetCertificateProperty(env.ObjVerEx);
 
-                    if (expired)
-                    {
-                        emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} has expired on {ExpiryDate}";
-                        emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} has expired on {ExpiryDate}." +
-                            $"<br>" +
-                            $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
-                            $"<br>" +
-                            $"Details of the certificate are below: <br> " +
-                            $"{certificateProperties}" +
-                            $"<br>" +
-                            $"Regards," +
-                            $"<br>" +
-                            $"Norco";
-                    }
-                    else
-                    {
-                        emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} will expire in {NumberOfDays} days, on {ExpiryDate}";
-                        emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} will expired on {ExpiryDate}." +
-                                                    $"<br>" +
-                                                    $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
-                                                    $"<br>" +
-                                                    $"Details of the certificate are below: <br> " +
-                                                    $"{certificateProperties}" +
-                                                    $"<br>" +
-                                                    $"Regards," +
-                                                    $"<br>" +
-                                                    $"Norco";
-                    }
+                    //if (expired)
+                    //{
+                        //emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} has expired on {ExpiryDate}";
+                        //emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} has expired on {ExpiryDate}." +
+                        //    $"<br>" +
+                        //    $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
+                        //    $"<br>" +
+                        //    $"Details of the certificate are below: <br> " +
+                        //    $"{certificateProperties}" +
+                        //    $"<br>" +
+                        //    $"Regards," +
+                        //    $"<br>" +
+                        //    $"Norco";
+                    //}
+                    //else
+                    //{
+                        //    emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} will expire in {NumberOfDays} days, on {ExpiryDate}";
+                        //    emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} will expired on {ExpiryDate}." +
+                        //                                $"<br>" +
+                        //                                $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
+                        //                                $"<br>" +
+                        //                                $"Details of the certificate are below: <br> " +
+                        //                                $"{certificateProperties}" +
+                        //                                $"<br>" +
+                        //                                $"Regards," +
+                        //                                $"<br>" +
+                        //                                $"Norco";
+                        //}
+                       emailMessage.Subject = "test";
+                    emailMessage.HtmlBody = env.ObjVerEx.ExpandPlaceholderText( Configuration.EmailTemplate) ;
+
                     // Add all files from the current object.
                     emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
+
                     // Send the message.
                     emailMessage.Send();
                 }
@@ -164,20 +201,20 @@ namespace Norco.Contractor.Portal
             return properties;
         }
 
-        private string getEmailContent(string emailName, List<emailInlineImage> images, EnvironmentBase env)
+        private string getEmailContent(Vault vault, ObjVerEx objVerExTemplate, string emailName, List<emailInlineImage> images)
         {
             string bodyMessage = "";
             string filePathname = SysUtils.CreateTempFolder();
             try
             {
-                // Create our search builder.
-                var searchBuilder = new MFSearchBuilder(env.Vault);
-                searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
-                searchBuilder.Property(MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle, new TypedValue { Value = emailName });
-                // Execute the search.
+                //// Create our search builder.
+                //var searchBuilder = new MFSearchBuilder(vault);
+                //searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
+                //searchBuilder.Property(MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle, new TypedValue { Value = emailName });
+                //// Execute the search.
 
-                var searchResult = searchBuilder.FindOneEx();
-                if (searchResult != null)
+                //var objVerExTemplate = searchBuilder.FindOneEx();
+                if (objVerExTemplate != null)
                 {
                     //https://loicsterckx.wordpress.com/2015/10/30/c-sends-emails-based-on-a-word-template-with-the-net-mail-library/
                     using (MemoryStream memoryStream = new MemoryStream())
@@ -186,10 +223,10 @@ namespace Norco.Contractor.Portal
 
                         
                         string fileName = $@"{filePathname}\emailTemplate.docx";
-                        ObjectFiles objFiles = env.Vault.ObjectFileOperations.GetFiles(searchResult.ObjVer);
-                        env.Vault.ObjectFileOperations.DownloadFile(objFiles[1].ID, objFiles[1].Version, fileName);
+                        ObjectFiles objFiles = vault.ObjectFileOperations.GetFiles(objVerExTemplate.ObjVer);
+                        vault.ObjectFileOperations.DownloadFile(objFiles[1].ID, objFiles[1].Version, fileName);
 
-                     var result=env.Vault.ObjectFileOperations.DownloadFileAsDataURIEx(searchResult.ObjVer, objFiles[1].FileVer);
+                     var result= vault.ObjectFileOperations.DownloadFileAsDataURIEx(objVerExTemplate.ObjVer, objFiles[1].FileVer);
 
                         byte[] byteArray = File.ReadAllBytes(fileName);
                         File.Delete(fileName);
@@ -214,7 +251,7 @@ namespace Norco.Contractor.Portal
                                     ImageFormat imageFormat = null;
                                     if (extension == "png")
                                     {
-                                        extension = "gif";
+                                        extension = "png";
                                         imageFormat = ImageFormat.Gif;
                                     }
                                     else if (extension == "gif")
@@ -225,8 +262,8 @@ namespace Norco.Contractor.Portal
                                         imageFormat = ImageFormat.Jpeg;
                                     else if (extension == "tiff")
                                     {
-                                        extension = "gif";
-                                        imageFormat = ImageFormat.Gif;
+                                        extension = "tiff";
+                                        imageFormat = ImageFormat.Tiff;
                                     }
                                     else if (extension == "x-wmf")
                                     {
@@ -259,7 +296,7 @@ namespace Norco.Contractor.Portal
                             XElement html = HtmlConverter.ConvertToHtml(doc, settings);
                             XNamespace w = "http://www.w3.org/1999/xhtml";
                             var bodyContainer = html.Element(w + "body");
-                            XElement myNewElement = new XElement("p", $"%%{env.ObjVerEx.ID}%%");
+                            XElement myNewElement = new XElement("p", $"%%{objVerExTemplate.ID}%%");
                             myNewElement.SetAttributeValue("Style", "font-size: 1px");
                             bodyContainer.AddAfterSelf(myNewElement);
                             bodyMessage = bodyContainer.ToStringNewLineOnAttributes();

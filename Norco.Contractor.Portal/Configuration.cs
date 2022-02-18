@@ -406,6 +406,12 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DocusignWorkflow { get; set; }
         = "WF.DocusignWorkflow";
 
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText")]
+        public string EmailTemplate;
+
+
+
 
     }
 
