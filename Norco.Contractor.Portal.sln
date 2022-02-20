@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1622
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norco.Contractor.Portal", "Norco.Contractor.Portal\Norco.Contractor.Portal.csproj", "{DBEA0E20-7C3A-49E2-B2B5-832DE0A3B113}"
 EndProject
