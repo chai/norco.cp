@@ -58,9 +58,6 @@ namespace Norco.Contractor.Portal
                 //{ }
 
 
-                SysUtils.
-
-
                 // Create a message.
                 using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
                 {
@@ -146,8 +143,8 @@ namespace Norco.Contractor.Portal
                     //                                $"<br>" +
                     //                                $"Norco";
                     //}
-                    ResourceManager rm = new ResourceManager("AppResources", typeof(Example).Assembly);
-                    TextFile1Any
+                    //ResourceManager rm = new ResourceManager("AppResources", typeof(Example).Assembly);
+                    //TextFile1Any
 
                        emailMessage.Subject = "test";
                     emailMessage.HtmlBody = env.ObjVerEx.ExpandPlaceholderText( Configuration.EmailTemplate) ;
