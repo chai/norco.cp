@@ -43,7 +43,7 @@ namespace Norco.Contractor.Portal
 
                             }
                            
-                            //valid  eact document
+                            //valid  each document
                         }
                     }
                     if(sb.Length>0)
@@ -56,9 +56,9 @@ namespace Norco.Contractor.Portal
 
                 //   return ValidateDate(env.ObjVerEx.GetProperty(Configuration.DateOfIssue), env.PropertyValue, ref message);
             }
-            catch
+            catch(Exception ex)
             {
-
+                SysUtils.ReportToEventLog($"DocumentationStatus validation failed for. {Environment.NewLine} {DocumentDetails(env.ObjVerEx)}", ex);
             }
             return typedValue;
         }

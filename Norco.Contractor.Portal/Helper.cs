@@ -231,5 +231,12 @@ namespace Norco.Contractor.Portal
                 return null;
             }
         }
+        private string DocumentDetails (ObjVerEx objVerEx)
+        {
+            return
+                $"Document title : {objVerEx.Title}{Environment.NewLine}" +
+                $"Document Type : {objVerEx.Class}{Environment.NewLine}" +
+                $"Document ID : {objVerEx.ID}{Environment.NewLine}";
+        }
     }
 }
