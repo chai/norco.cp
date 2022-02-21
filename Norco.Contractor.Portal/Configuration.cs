@@ -129,6 +129,17 @@ namespace Norco.Contractor.Portal
         public MFIdentifier ContractorCompanyClass { get; set; }
     = "CL.Company";
 
+
+
+        [MFClass(Required = true)]
+        public MFIdentifier SignatureDetailsClass { get; set; }
+= "CL.MemberContract";
+
+        [MFClass(Required = true)]
+        public MFIdentifier InductionDocumentClass { get; set; }
+= "CL.MemberContract";
+
+
         #endregion
 
         #region Workflow
@@ -386,9 +397,6 @@ namespace Norco.Contractor.Portal
         //public MFIdentifier DocuSignTitle { get; set; }
         //    = "PD.DocusignDocumentName";
 
-        [MFClass(Required = true)]
-        public MFIdentifier SignatureDetailsClass { get; set; }
-        = "CL.MemberContract";
 
 
         [MFState(Required = true)]

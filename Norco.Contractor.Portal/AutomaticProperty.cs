@@ -203,7 +203,48 @@ namespace Norco.Contractor.Portal
 
             return typedValue;
         }
-        
+
+        [PropertyCustomValue("PD.InductionDocument(s)")]
+        public TypedValue EmployeeContractorInductionDocuments(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+
+            try
+            {
+                
+                var searchBuilder = new MFSearchBuilder(env.Vault);
+                searchBuilder.ObjType((int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument);
+                searchBuilder.Class(Configuration.InductionDocumentClass);
+                searchBuilder.Property(Configuration.ContractorsForCompany, MFDataType.MFDatatypeMultiSelectLookup, env.ObjVer.ID);
+                var inductionDocuments = searchBuilder.FindEx();
+
+
+                if (inductionDocuments != null)
+                {
+                    var lookups = new Lookups();
+
+                    foreach (var inductDoc in inductionDocuments)
+                    {
+                        lookups.Add(-1, new Lookup() { Item = inductDoc.ObjVer.ID });
+                    }
+
+                    typedValue.SetValue(MFDataType.MFDatatypeMultiSelectLookup, lookups);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                SysUtils.ReportErrorToEventLog($"EmployeeContractorInductionDocuments failed for. {Environment.NewLine}{ObjectDetails(env.ObjVerEx)}", ex);
+            }
+
+            return typedValue;
+        }
+
+
+
+
+
     }
 
 
