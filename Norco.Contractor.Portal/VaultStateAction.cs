@@ -17,10 +17,6 @@ namespace Norco.Contractor.Portal
         {
             try
             {
-
-
-
-
                 try
                 {
                     SendEmail(false, env);
@@ -46,19 +42,19 @@ namespace Norco.Contractor.Portal
                     }
                     catch(Exception createDocumentRequest)
                     {
-                        SysUtils.ReportErrorToEventLog($"DocumentExpiredIn30Days : {ObjectDetails(env.ObjVerEx)}", "Creating document request failed.", createDocumentRequest);
+                        SysUtils.ReportErrorToEventLog("DocumentExpiredIn30Days.", $"Creating document request failed.{ObjectDetails(env.ObjVerEx)}", createDocumentRequest);
                     }
                 }
                 catch (Exception ex)
                 {
-                    SysUtils.ReportErrorToEventLog($"DocumentExpiredIn30Days : {ObjectDetails(env.ObjVerEx)}", "Error in State Action for 30 days to expiry.", ex);
+                    SysUtils.ReportErrorToEventLog("DocumentExpiredIn30Days.", $"Error in State Action for 30 days to expiry. {ObjectDetails(env.ObjVerEx)}", ex);
 
                 }
 
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"DocumentExpiredIn30Days: {ObjectDetails(env.ObjVerEx)}", "Error in State Action for 30 days to expiry.", ex);
+                SysUtils.ReportErrorToEventLog($"DocumentExpiredIn30Days.", $"Error in State Action for 30 days to expiry. {ObjectDetails(env.ObjVerEx)}", ex);
 
             }
         }
@@ -73,7 +69,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"DocumentExpiredIn7Days : {ObjectDetails(env.ObjVerEx)}", "Error in State Action for 7 days to expiry.", ex);
+                SysUtils.ReportErrorToEventLog($"DocumentExpiredIn7Days.", $"Error in State Action for 7 days to expiry.{ObjectDetails(env.ObjVerEx)}", ex);
 
             }
         }
@@ -86,7 +82,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"DocumentExpired : {ObjectDetails(env.ObjVerEx)}", "Error in State Action for Expired.", ex);
+                SysUtils.ReportErrorToEventLog($"DocumentExpired.", $"Error in State Action for Expired.{ObjectDetails(env.ObjVerEx)}", ex);
 
             }
         }
@@ -129,7 +125,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"DocumentUploaded: {ObjectDetails(env.ObjVerEx)}", "Error in State Action for 30 days to expiry.", ex);
+                SysUtils.ReportErrorToEventLog($"DocumentUploaded.", $"Error in State Action for 30 days to expiry. {ObjectDetails(env.ObjVerEx)}", ex);
             }
         }
 
@@ -164,7 +160,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"SetValidatedBy: {ObjectDetails(env.ObjVerEx)}", "Error in State Action SetValidated By.", ex);
+                SysUtils.ReportErrorToEventLog($"SetValidatedBy.", $"Error in State Action SetValidated By.{ObjectDetails(env.ObjVerEx)}", ex);
             }
         }
 
@@ -183,7 +179,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"SetInductionDate: {ObjectDetails(env.ObjVerEx)}", "Error in State Action SetInductionDate By.", ex);
+                SysUtils.ReportErrorToEventLog($"SetInductionDate.", $"Error in State Action SetInductionDate By. {ObjectDetails(env.ObjVerEx)}", ex);
             }
         }
 
