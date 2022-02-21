@@ -247,9 +247,7 @@ namespace Norco.Contractor.Portal
         } = new MFilesAPI.Extensions.Email.SmtpConfiguration();
 
 
-        [DataMember]
-        public string PlaceHolderFile { get; set; }
-        = $@"C:\Temp\Placeholder.txt";
+
 
         [DataMember]
         public string NorcoNotificationPerson { get; set; }
