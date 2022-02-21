@@ -49,13 +49,6 @@ namespace Norco.Contractor.Portal
 
                 List<ObjVerEx> foundDocumentsObjects = FindObjVerExByFilter(job.Vault, this.Configuration.IsDocumentFilter.ToApiObject(job.Vault));
 
-           //     foundDocumentsObjects.AddRange(FindObjVerExByFilter(job.Vault, this.Configuration.IsDocumentFilter.ToApiObject(job.Vault)));
-
-
-
-
-
-
 
                 if (foundDocumentsObjects != null || foundDocumentsObjects.Count > 0)
                 {
@@ -97,21 +90,14 @@ namespace Norco.Contractor.Portal
             {
                 if (objVerEx != null)
                 {
-                    //PropertyValue pv = objVerEx.GetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment);
-                    //    objVerEx.CheckOut();
-                    //pv.TypedValue.SetValue(MFDataType.MFDatatypeMultiLineText, $"Check status by background task: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-                    //    objVerEx.SaveProperty(pv);
-                    //    objVerEx.CheckIn();
+                    //touch varibale to cause autoproperty
+                    objVerEx.SaveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment, MFDataType.MFDatatypeMultiLineText, $"Checked by background task at : {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
 
-
-
-                        objVerEx.SaveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment, MFDataType.MFDatatypeMultiLineText, $"Checked by background task at : {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-                    
-                    }
+                }
             }
             catch(Exception ex)
             {
-                SysUtils.ReportErrorToEventLog($"Document Background update: {objVerEx.Title} {objVerEx.ID}", ex);
+                SysUtils.ReportErrorToEventLog($"Document Background update: {ObjectDetails(objVerEx)}", ex);
             }
         }
 
@@ -156,6 +142,7 @@ namespace Norco.Contractor.Portal
             }
             catch(Exception ex)
             {
+                SysUtils.ReportErrorToEventLog($"FindObjVerExByFilter.", ex);
                 return null;
             }
         }

@@ -30,27 +30,6 @@ namespace Norco.Contractor.Portal
 
 
 
-
-        //[PropertyValueValidation("PD.ActivityExpiryDate")]
-        //public bool ActivityExpiryDate(PropertyEnvironment env, out string message)
-        //{
-        //    // Set the message (displayed if validation fails).
-        //    message = "";
-
-        //    // Validate.
-        //    try
-        //    {
-        //        return ValidateDate(env.ObjVerEx.GetProperty(Configuration.ActivityStartDate), env.PropertyValue, ref message);
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-
-        //}
-
-
-       // [PropertyValueValidation("PD.Valid")]
         public bool DocumentValid(PropertyEnvironment env, out string message)
         {
             // Set the message (displayed if validation fails).

@@ -39,7 +39,6 @@ namespace Norco.Contractor.Portal
                         }
                     }
 
-
                     var currentCompany = env.ObjVerEx.GetPropertyText(Configuration.CompanyOfContractor);
                     if (currentCompany != String.Empty)
                     {
@@ -56,13 +55,10 @@ namespace Norco.Contractor.Portal
 
                         }
                     }
-
-                    //SysUtils.ReportInfoToEventLog($"Event for HubShare", $"{env.ObjVerEx.Title} {env.EventType} {env.CurrentUserID}");
                     if (updated)
                     {
                         env.ObjVerEx.SaveProperties(propertyValues);
                     }
-                    //SysUtils.ReportInfoToEventLog($"Event for HubShare SAVED", $"{env.ObjVerEx.Title} {env.EventType} {env.CurrentUserID}");
                 }
                 else
                 {
@@ -72,7 +68,8 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception e)
             {
-                SysUtils.ReportErrorToEventLog("Hubsher", e);
+                //SysUtils.ReportInfoToEventLog($"Event for HubShare SAVED", $"{env.ObjVerEx.Title} {env.EventType} {env.CurrentUserID}");
+                SysUtils.ReportErrorToEventLog($"CheckForName. Creating Induction temporary {ObjectDetails(env.ObjVerEx)}", e);
             }
 
 

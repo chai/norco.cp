@@ -58,7 +58,7 @@ namespace Norco.Contractor.Portal
             }
             catch(Exception ex)
             {
-                SysUtils.ReportToEventLog($"DocumentationStatus validation failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+                SysUtils.ReportErrorToEventLog($"DocumentationStatus validation failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
             }
             return typedValue;
         }
@@ -81,7 +81,10 @@ namespace Norco.Contractor.Portal
 
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) {
+
+                SysUtils.ReportErrorToEventLog($"setHubnameBasedOnCompany failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+            }
             return typedValue;
         }
 
@@ -108,7 +111,9 @@ namespace Norco.Contractor.Portal
 
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) {
+                SysUtils.ReportErrorToEventLog($"setBlacklisted failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+            }
             return typedValue;
         }
 
@@ -134,7 +139,9 @@ namespace Norco.Contractor.Portal
 
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) {
+                SysUtils.ReportErrorToEventLog($"setupUploaderBasedOnEmail failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+            }
             return typedValue;
         }
 
@@ -167,28 +174,12 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-
+                SysUtils.ReportErrorToEventLog($"isDocumentValid failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
             }
             return typedValue;
         }
 
 
-
-        //[PropertyCustomValue("PD.TestAutoproperty")]
-        //public TypedValue Test(PropertyEnvironment env)
-        //{
-        //    TypedValue typedValue = new TypedValue();
-        //    typedValue.SetValue(MFDataType.MFDatatypeText, false);
-        //    try
-        //    {
-        //        typedValue.SetValue(MFDataType.MFDatatypeText, $"{DateTime.Now.ToLongDateString()} -  {DateTime.Now.ToLongTimeString()}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //    return typedValue;
-        //}
  
         [PropertyCustomValue("PD.EmployeeContractorEmail")]
         public TypedValue EmployeeContractorEmail(PropertyEnvironment env)
@@ -206,7 +197,9 @@ namespace Norco.Contractor.Portal
 
             }
             catch (Exception ex)
-            { }
+            {
+                SysUtils.ReportErrorToEventLog($"EmployeeContractorEmail failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+            }
 
             return typedValue;
         }

@@ -133,7 +133,7 @@ namespace Norco.Contractor.Portal
                 //Not loging usual error to Windows Event per M-File cloud requirement
                 //Log
                 SysUtils.ReportErrorMessageToEventLog($"CopyObjectFiles.", ex);
-                SysUtils.ReportErrorToEventLog(e);
+
             }
         }
 
