@@ -18,30 +18,36 @@ namespace Norco.Contractor.Portal
             try
             {
 
-                var propertyValues = env.ObjVerEx.Properties;
 
-                propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefWorkflow,MFDataType.MFDatatypeLookup,Configuration.DocumentRequestWorkflow);
-                propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequestState);
-                propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass);
-                propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
-
-                propertyValues.RemoveProperty(Configuration.IsDocumentValid);
-                propertyValues.RemoveProperty(Configuration.SingleFile);
-                propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefObjectID);
-                propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle);
-
-
-                
-              var docRequest=  env.Vault.ObjectOperations.CreateNewObjectExQuick(                 
-                    Configuration.DocumentRequestObject, propertyValues, null, false, true, null);
-
-
-                env.ObjVerEx.SaveProperty(Configuration.DocumentRequest, MFDataType.MFDatatypeLookup, docRequest);
 
 
                 try
                 {
-                    SendEmail(30, false, env);
+                    SendEmail(false, env);
+
+                    try
+                    {
+                        var propertyValues = env.ObjVerEx.Properties;
+                        propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefWorkflow, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestWorkflow);
+                        propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequestState);
+                        propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefClass, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestClass);
+                        propertyValues.SetProperty(Configuration.ExpiredDocument, MFDataType.MFDatatypeLookup, env.ObjVer.ID);
+
+                        propertyValues.RemoveProperty(Configuration.IsDocumentValid);
+                        propertyValues.RemoveProperty(Configuration.SingleFile);
+                        propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefObjectID);
+                        propertyValues.RemoveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefNameOrTitle);
+
+                        var docRequest = env.Vault.ObjectOperations.CreateNewObjectExQuick(
+                              Configuration.DocumentRequestObject, propertyValues, null, false, true, null);
+
+
+                        env.ObjVerEx.SaveProperty(Configuration.DocumentRequest, MFDataType.MFDatatypeLookup, docRequest);
+                    }
+                    catch(Exception createDocumentRequest)
+                    {
+                        SysUtils.ReportErrorToEventLog("DocumentExpiredIn30Days", "Creating document request failed.", createDocumentRequest);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -63,7 +69,7 @@ namespace Norco.Contractor.Portal
         {
             try
             {
-                SendEmail(7, false, env);
+                SendEmail(false, env);
             }
             catch (Exception ex)
             {
@@ -76,7 +82,7 @@ namespace Norco.Contractor.Portal
         {
             try
             {
-                SendEmail(0, true, env);
+                SendEmail(true, env);
             }
             catch (Exception ex)
             {

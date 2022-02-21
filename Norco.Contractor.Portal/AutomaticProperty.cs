@@ -26,7 +26,7 @@ namespace Norco.Contractor.Portal
                 var contractorType = env.ObjVerEx.GetLookupsFromProperty(Configuration.ContractorType);
                 foreach (var contype in contractorType)
                 {
-                    var conTypeConfig = Configuration.contractorTypeCertifications.FindAll(x => x.ContractorType.Guid == contype.ItemGUID);
+                    var conTypeConfig = Configuration.ContractorTypeCertificationsDocumentList.FindAll(x => x.ContractorType.Guid == contype.ItemGUID);
                     foreach (var certDocList in conTypeConfig)
                     {
                         foreach (var certDoc in certDocList.CertificationDocument)

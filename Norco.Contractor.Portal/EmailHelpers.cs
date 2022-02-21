@@ -23,54 +23,15 @@ namespace Norco.Contractor.Portal
             }
         }
 
-        private void SendEmail(int NumberOfDays, bool expired, StateEnvironment env)
+        private void SendEmail(bool expired, StateEnvironment env)
         {
             try
             {
 
-
-                //string emailBody = "";
-
-                //var mfPropertyValuesBuilder = GenerateTemplateProperty(env.Vault, env.ObjVerEx);                
-                //try
-                //{
-
-
-                //    var templateObjVerEx = FindTemplate(env.Vault, Configuration.SignatureDetailsClass, Configuration.TemplateName);
-                //    if (templateObjVerEx != null)
-                //    {
-
-                //        var newEmailNotification = CreateDocumentFromTemplate(env.Vault, templateObjVerEx, mfPropertyValuesBuilder);
-                //        List<emailInlineImage> CIDImages = new List<emailInlineImage>();
-                //        CIDImages.Add(new emailInlineImage()
-                //            { filepath = @"C:\norcoemmail\footer.jpeg", guid = env.ObjVerEx.Info.VersionGUID, type = "jpeg" });
-
-                //        emailBody = getEmailContent(env.Vault, newEmailNotification, "email notification", CIDImages);
-
-                //    }
-                //    else
-                //    {
-                //        throw new Exception("Could not find Template");
-                //    }
-
-                //}
-                //catch (Exception ex)
-                //{ }
-
-
                 // Create a message.
                 using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
                 {
-                    string ExpiryDate = "";
-                    string IssueDate = "";
-                    if (env.ObjVerEx.TryGetProperty(Configuration.DateOfExpiry, out PropertyValue ExpiryDateProperty))
-                    {
-                        ExpiryDate = ExpiryDateProperty.Value.DisplayValue;
-                    }
-                    if (env.ObjVerEx.TryGetProperty(Configuration.DateOfIssue, out PropertyValue IssueDateProperty))
-                    {
-                        IssueDate = IssueDateProperty.Value.DisplayValue;
-                    }
+
 
                     emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
 
@@ -95,17 +56,6 @@ namespace Norco.Contractor.Portal
                     }
 
 
-                    var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
-                    if (contractor != null)
-                    {
-                        if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
-                        {
-                            if (IsValidEmail(email1.Value.DisplayValue))
-                            {
-                                emailMessage.AddRecipient(AddressType.To, email1.Value.DisplayValue);
-                            }
-                        }
-                    }
 
 
                     emailMessage.AddRecipient(AddressType.CarbonCopy, Configuration.NorcoNotificationPerson);
@@ -113,60 +63,83 @@ namespace Norco.Contractor.Portal
 
 
 
-                    var certificateProperties = GetCertificateProperty(env.ObjVerEx);
+                    var certificateProperties = GetEmailProperties(env.ObjVerEx);
+                    if (certificateProperties.subject != string.Empty && certificateProperties.emailBody != string.Empty)
+                    {
+                        if (expired)
+                        {
+                            emailMessage.Subject = certificateProperties.subjectExpired;
+                        }
+                        else
+                        {
+                            emailMessage.Subject = certificateProperties.subject;
+                        }
+                        emailMessage.HtmlBody = certificateProperties.emailBody;
 
-                    //if (expired)
-                    //{
-                    //emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} has expired on {ExpiryDate}";
-                    //emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} has expired on {ExpiryDate}." +
-                    //    $"<br>" +
-                    //    $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
-                    //    $"<br>" +
-                    //    $"Details of the certificate are below: <br> " +
-                    //    $"{certificateProperties}" +
-                    //    $"<br>" +
-                    //    $"Regards," +
-                    //    $"<br>" +
-                    //    $"Norco";
-                    //}
-                    //else
-                    //{
-                    //    emailMessage.Subject = $"Document {env.ObjVerEx.Title} isseued on {IssueDate} will expire in {NumberOfDays} days, on {ExpiryDate}";
-                    //    emailMessage.HtmlBody = $"Our records indicate that Contractor {contractor.Title} from {company.Title} certification for {env.ObjVerEx.Title} will expired on {ExpiryDate}." +
-                    //                                $"<br>" +
-                    //                                $"The certificate {env.ObjVerEx.Title} is set to expire on the <b>{ExpiryDate}</b>." +
-                    //                                $"<br>" +
-                    //                                $"Details of the certificate are below: <br> " +
-                    //                                $"{certificateProperties}" +
-                    //                                $"<br>" +
-                    //                                $"Regards," +
-                    //                                $"<br>" +
-                    //                                $"Norco";
-                    //}
-                    //ResourceManager rm = new ResourceManager("AppResources", typeof(Example).Assembly);
-                    //TextFile1Any
+                        // Add all files from the current object.
+                        emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
 
-                       emailMessage.Subject = "test";
-                    emailMessage.HtmlBody = env.ObjVerEx.ExpandPlaceholderText( Configuration.EmailTemplate) ;
+                        var contractor = env.ObjVerEx.GetDirectReference(Configuration.ContractorsForCompany);
+                        if (contractor != null)
+                        {
+                            if (contractor.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
+                            {
+                                if (IsValidEmail(email1.Value.DisplayValue))
+                                {
+                                    emailMessage.AddRecipient(AddressType.To, email1.Value.DisplayValue);
+                                    emailMessage.Send();
+                                }
+                                else
+                                {
+                                    SysUtils.ReportToEventLog($"Send e-mail notification failed. Contracor email ({email1.Value.DisplayValue}) is invalid . Document {env.ObjVerEx.Title}({env.ObjVerEx.ID}).{Environment.NewLine}" +
+                                        $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
+                                        $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
+                                    throw new Exception("Email address invalid");
+                                }
 
-                    // Add all files from the current object.
-                    emailMessage.AddAllFiles(env.ObjVerEx.Info, env.Vault, MFFileFormat.MFFileFormatDisplayOnlyPDF);
+                            }
+                            else
+                            {
+                                SysUtils.ReportToEventLog($"Send e-mail notification failed. Contractor does not have an email set. Document {env.ObjVerEx.Title}({env.ObjVerEx.ID}).{Environment.NewLine}" +
+        $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
+        $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
+                                throw new Exception("No email set");
+                            }
 
-                    // Send the message.
-                    emailMessage.Send();
+                        }
+                        else
+                        {
+                            SysUtils.ReportToEventLog($"Send e-mail notification failed. Mo Contractor set. Document {env.ObjVerEx.Title}({env.ObjVerEx.ID}).{Environment.NewLine}" +
+        $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
+        $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
+                            throw new Exception("No contractor set");
+                        }
+
+
+                    }
+
+                    else
+                    {
+                        SysUtils.ReportToEventLog($"Send e-mail notification failed. No template set for document type id {env.ObjVerEx.Class}. Document {env.ObjVerEx.Title}({env.ObjVerEx.ID}).{Environment.NewLine}" +
+    $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
+    $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
+                        throw new Exception("Email template not set");
+                    }
                 }
-
             }
             catch (Exception ex)
             {
                 SysUtils.ReportErrorToEventLog("SendEmail", "Error Sending Email", ex);
+                throw ex;
             }
 
         }
 
-        private string GetCertificateProperty(ObjVerEx objVerEx)
+        private (string subject, string subjectExpired, string emailBody) GetEmailProperties(ObjVerEx objVerEx)
         {
-            string properties = "";
+            string subject = String.Empty;
+            string subjectExpired = String.Empty;
+            string emailBody = String.Empty;
             try
             {
                 if (Configuration.CertificateEmailProperties != null || Configuration.CertificateEmailProperties.Count > 0)
@@ -175,11 +148,10 @@ namespace Norco.Contractor.Portal
                     var docDefinition = Configuration.CertificateEmailProperties.Where(type => type.DocumentType.ID == objVerEx.Class).FirstOrDefault();
 
 
-                    foreach (var propID in docDefinition.EmailProperties)
-                    {
-                        properties = $"{properties}<b>{propID.PropertyName}:</b> {objVerEx.GetPropertyText(propID.CertificateProperty)}<br>";
-                    }
 
+                    subject = objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectTextTemplate);
+                    subjectExpired = objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectExpiredTextTemplate);
+                    emailBody = objVerEx.ExpandPlaceholderText(docDefinition.EmailBodyTemplate);
 
 
                 }
@@ -190,7 +162,7 @@ namespace Norco.Contractor.Portal
                 SysUtils.ReportErrorToEventLog("GetCertificateProperty", "Error getting Certificate property for email body.", ex);
             }
 
-            return properties;
+            return (subject, subjectExpired,emailBody);
         }
 
     }

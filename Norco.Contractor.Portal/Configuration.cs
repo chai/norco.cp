@@ -16,35 +16,26 @@ namespace Norco.Contractor.Portal
         [DataMember]
         [MFClass(Required = true)]
         public MFIdentifier DocumentType { get; set; }
-        [DataMember]
-        public List<EmailBodyProperty> EmailProperties { get; set; }
 
         [DataMember]
-        public string EmailTemplateName;
-
-
-        [DataMember]
-        [JsonConfEditor(TypeEditor = "placeholderText")]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired =true, Label="Text to use as notification email subject for document about to expire.")]
         public string EmailSubjectTextTemplate;
 
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "Text to use as notification email subject for expired document.")]
+        public string EmailSubjectExpiredTextTemplate;
+
+        
+
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "HTML text to use as notification email subject.")]
+        public string EmailBodyTemplate;
+
+
 
     }
 
-    [DataContract]
-    public class EmailBodyProperty
-    {
 
-
-
-        [DataMember]
-
-        public string PropertyName { get; set; }
-
-        [DataMember]
-        [MFPropertyDef(Required = true)]
-        public MFIdentifier CertificateProperty { get; set; }
-
-    }
 
 
 
@@ -229,10 +220,12 @@ namespace Norco.Contractor.Portal
         public const int SingleFile = 22;
 
         [DataMember]
-        public List<ContractorTypeCertification> contractorTypeCertifications { get; set; }
+        [JsonConfEditor(Label = @"Document list required by each contractor type.")]
+        public List<ContractorTypeCertification> ContractorTypeCertificationsDocumentList { get; set; }
 
 
         [DataMember]
+        [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
         public List<DocumentEmail> CertificateEmailProperties { get; set; }
 
         [DataMember]
@@ -386,12 +379,12 @@ namespace Norco.Contractor.Portal
 
         [DataMember]
         [Security(ChangeBy = SecurityAttribute.UserLevel.SystemAdmin)]
-        [JsonConfEditor(DefaultValue = @"ClubPASS - Order Form - Medium Club - October 2021")]
-        public string TemplateName = @"ClubPASS - Order Form - Medium Club - October 2021";
+        [JsonConfEditor(DefaultValue = @"Induction Template for DocuSign", Label ="Name of word document to use as template for DocuSign Induction.")]
+        public string DocuSignTemplateName = @"Induction Template for DocuSign";
 
-        [MFPropertyDef(Required = true)]
-        public MFIdentifier DocuSignTitle { get; set; }
-            = "PD.DocusignDocumentName";
+        //[MFPropertyDef(Required = true)]
+        //public MFIdentifier DocuSignTitle { get; set; }
+        //    = "PD.DocusignDocumentName";
 
         [MFClass(Required = true)]
         public MFIdentifier SignatureDetailsClass { get; set; }
@@ -406,9 +399,6 @@ namespace Norco.Contractor.Portal
         public MFIdentifier DocusignWorkflow { get; set; }
         = "WF.DocusignWorkflow";
 
-        [DataMember]
-        [JsonConfEditor(TypeEditor = "placeholderText")]
-        public string EmailTemplate;
 
 
 

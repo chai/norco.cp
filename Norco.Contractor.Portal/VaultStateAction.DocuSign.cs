@@ -64,7 +64,7 @@ namespace Norco.Contractor.Portal
                 // Execute the search.
                 // var searchResult2 = searchBuilder.FindOneEx();
 
-                var templateObjVerEx = FindTemplate(env.Vault, Configuration.SignatureDetailsClass, Configuration.TemplateName);
+                var templateObjVerEx = FindTemplate(env.Vault, Configuration.SignatureDetailsClass, Configuration.DocuSignTemplateName);
                 if (templateObjVerEx != null)
                 {
                     //ObjectFiles objTemplateFiles = env.Vault.ObjectFileOperations.GetFiles(templateObjVerEx.ObjVer);
