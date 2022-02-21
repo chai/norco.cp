@@ -28,7 +28,7 @@ namespace Norco.Contractor.Portal
         
 
         [DataMember]
-        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "HTML text to use as notification email subject.")]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "HTML text to use as notification email text.")]
         public string EmailBodyTemplate;
 
 
