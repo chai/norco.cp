@@ -30,7 +30,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-
+                SysUtils.ReportErrorMessageToEventLog($"FindContractorByEmail.", ex);
             }
             return null;
         }
@@ -87,7 +87,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-
+                SysUtils.ReportErrorMessageToEventLog($"FoundDocument. {ObjectDetails (contractor)}", ex);
             }
             return DocumentStatus.Missing;
         }
@@ -128,10 +128,11 @@ namespace Norco.Contractor.Portal
                     vault.ObjectFileOperations.CloseUploadSession(upload_id);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 //Not loging usual error to Windows Event per M-File cloud requirement
                 //Log
+                SysUtils.ReportErrorMessageToEventLog($"CopyObjectFiles.", ex);
                 SysUtils.ReportErrorToEventLog(e);
             }
         }
@@ -149,7 +150,7 @@ namespace Norco.Contractor.Portal
             }
             catch (Exception ex)
             {
-
+                SysUtils.ReportErrorMessageToEventLog($"FindCompanyBasedOnName.", ex);
             }
             return null;
         }
@@ -171,6 +172,7 @@ namespace Norco.Contractor.Portal
             }
             catch(Exception ex)
             {
+                SysUtils.ReportErrorMessageToEventLog($"FindTemplate.", ex);
                 return null;
             }
         }
@@ -210,6 +212,7 @@ namespace Norco.Contractor.Portal
             }
             catch(Exception ex)
             {
+                SysUtils.ReportErrorMessageToEventLog($"GenerateTemplateProperty {ObjectDetails(documentObjverEx)}.", ex);
                 return null;
             }
 
@@ -228,15 +231,28 @@ namespace Norco.Contractor.Portal
                 return newLetter;
             }catch(Exception ex)
             {
+                SysUtils.ReportErrorMessageToEventLog($"CreateDocumentFromTemplate {ObjectDetails(templateObjVerEx)}.", ex);
                 return null;
             }
         }
-        private string DocumentDetails (ObjVerEx objVerEx)
+        private string ObjectDetails(ObjVerEx objVerEx)
         {
+            string prefix = string.Empty;
+            if (objVerEx.Type == (int)MFBuiltInObjectType.MFBuiltInObjectTypeDocument)
+            {
+                prefix = "Document";
+            }
+            else
+            {
+                prefix = "Object";
+            }
+
             return
-                $"Document title : {objVerEx.Title}{Environment.NewLine}" +
-                $"Document Type : {objVerEx.Class}{Environment.NewLine}" +
-                $"Document ID : {objVerEx.ID}{Environment.NewLine}";
+                    $"{prefix} title : {objVerEx.Title}{Environment.NewLine}" +
+                    $"{prefix} Type : {objVerEx.Class}{Environment.NewLine}" +
+                    $"{prefix} ID : {objVerEx.ID}{Environment.NewLine}";
         }
+
+
     }
 }

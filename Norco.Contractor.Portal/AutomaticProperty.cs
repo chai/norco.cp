@@ -58,7 +58,7 @@ namespace Norco.Contractor.Portal
             }
             catch(Exception ex)
             {
-                SysUtils.ReportToEventLog($"DocumentationStatus validation failed for. {Environment.NewLine} {DocumentDetails(env.ObjVerEx)}", ex);
+                SysUtils.ReportToEventLog($"DocumentationStatus validation failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
             }
             return typedValue;
         }

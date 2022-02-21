@@ -91,7 +91,7 @@ namespace Norco.Contractor.Portal
                                 }
                                 else
                                 {
-                                    SysUtils.ReportToEventLog($"Send e-mail notification failed. Contracor email ({email1.Value.DisplayValue}) is invalid .{Environment.NewLine} {DocumentDetails(env.ObjVerEx)}{Environment.NewLine}" +
+                                    SysUtils.ReportToEventLog($"Send e-mail notification failed. Contracor email ({email1.Value.DisplayValue}) is invalid .{Environment.NewLine} {ObjectDetails(env.ObjVerEx)}{Environment.NewLine}" +
                                         $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
                                         $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
                                     throw new Exception("Email address invalid");
@@ -100,7 +100,7 @@ namespace Norco.Contractor.Portal
                             }
                             else
                             {
-                                SysUtils.ReportToEventLog($"Send e-mail notification failed. Contractor does not have an email set. {Environment.NewLine} {DocumentDetails(env.ObjVerEx)}{Environment.NewLine}" +
+                                SysUtils.ReportToEventLog($"Send e-mail notification failed. Contractor does not have an email set. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}{Environment.NewLine}" +
         $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
         $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
                                 throw new Exception("No email set");
@@ -109,7 +109,7 @@ namespace Norco.Contractor.Portal
                         }
                         else
                         {
-                            SysUtils.ReportToEventLog($"Send e-mail notification failed. Mo Contractor set. {Environment.NewLine} {DocumentDetails(env.ObjVerEx)}{Environment.NewLine}" +
+                            SysUtils.ReportToEventLog($"Send e-mail notification failed. Mo Contractor set. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}{Environment.NewLine}" +
         $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
         $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
                             throw new Exception("No contractor set");
@@ -120,7 +120,7 @@ namespace Norco.Contractor.Portal
 
                     else
                     {
-                        SysUtils.ReportToEventLog($"Send e-mail notification failed. No template set for document.{Environment.NewLine} {DocumentDetails(env.ObjVerEx)}{Environment.NewLine}" +
+                        SysUtils.ReportToEventLog($"Send e-mail notification failed. No template set for document.{Environment.NewLine} {ObjectDetails(env.ObjVerEx)}{Environment.NewLine}" +
     $"Email subject : {certificateProperties.subject} {Environment.NewLine}" +
     $"Email body : {certificateProperties.emailBody}", System.Diagnostics.EventLogEntryType.Error);
                         throw new Exception("Email template not set");
