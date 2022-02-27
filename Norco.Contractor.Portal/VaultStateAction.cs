@@ -174,6 +174,7 @@ namespace Norco.Contractor.Portal
                 env.ObjVerEx.SetProperty(Configuration.DateOfIssue, MFDataType.MFDatatypeDate, DateTime.Now);
 
                 env.ObjVerEx.SetProperty(Configuration.DateOfExpiry, MFDataType.MFDatatypeDate, DateTime.Now.AddMonths(Configuration.InductionExpiryInMonth));
+                env.ObjVerEx.SetWorkflowState(Configuration.DocumentExpiryNotificationWorkflow, Configuration.DocumentExpiryNotificationVerifiedDocumentCheckState);
 
                 env.ObjVerEx.SaveProperties();
             }

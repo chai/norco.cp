@@ -35,26 +35,30 @@ namespace Norco.Contractor.Portal
 
                     emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
 
-                    var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
-                    if (company != null)
+
+                    if (Configuration.CarbonCopyCompanyEmail)
                     {
-                        if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
-                        {
-                            if (IsValidEmail(email1.Value.DisplayValue))
-                            {
-                                emailMessage.AddRecipient(AddressType.CarbonCopy, email1.Value.DisplayValue);
-                            }
-                        }
-                        if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email2))
-                        {
-                            if (IsValidEmail(email2.Value.DisplayValue))
-                            {
-                                emailMessage.AddRecipient(AddressType.CarbonCopy, email2.Value.DisplayValue);
-                            }
-                        }
 
+                        var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
+                        if (company != null)
+                        {
+                            if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email1))
+                            {
+                                if (IsValidEmail(email1.Value.DisplayValue))
+                                {
+                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email1.Value.DisplayValue);
+                                }
+                            }
+                            if (company.TryGetProperty(Configuration.EmailAddress, out PropertyValue email2))
+                            {
+                                if (IsValidEmail(email2.Value.DisplayValue))
+                                {
+                                    emailMessage.AddRecipient(AddressType.CarbonCopy, email2.Value.DisplayValue);
+                                }
+                            }
+
+                        }
                     }
-
 
 
 

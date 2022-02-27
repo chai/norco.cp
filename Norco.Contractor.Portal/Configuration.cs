@@ -36,9 +36,31 @@ namespace Norco.Contractor.Portal
     }
 
 
+    [DataContract]
+    public class DocumentEmailSettings
+    {
+
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "Default: Text to use as notification email subject for document about to expire.")]
+        public string DefaultEmailSubjectTextTemplate;
+
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "Default: Text to use as notification email subject for expired document.")]
+        public string DefaultEmailSubjectExpiredTextTemplate;
 
 
 
+        [DataMember]
+        [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "Default: HTML text to use as notification email text.")]
+        public string DefaultEmailBodyTemplate;
+
+
+        [DataMember]
+        [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
+        public List<DocumentEmail> CertificateEmailProperties { get; set; }
+
+
+    }
     [DataContract]
     public class RenewalDocument
     {
@@ -206,7 +228,14 @@ namespace Norco.Contractor.Portal
                 [MFPropertyDef(Required = true)]
         public MFIdentifier CompanyOfContractor { get; set; }
         = "PD.ContractorCompany";
-        
+
+
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier CompanyHubshareName { get; set; }
+= "PD.HubName";
+
+
+
 
         [MFPropertyDef(Required = true)]
         public MFIdentifier IsDocumentValid { get; set; }
@@ -238,6 +267,17 @@ namespace Norco.Contractor.Portal
         [DataMember]
         [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
         public List<DocumentEmail> CertificateEmailProperties { get; set; }
+
+        [DataMember]
+        [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
+        public DocumentEmailSettings DocumentEmailSettings { get; set; }
+
+        
+
+
+        [DataMember]
+        [JsonConfEditor(Label = @"Email notification for expiring document should CC in Company Email")]
+        public bool CarbonCopyCompanyEmail { get; set; }
 
         [DataMember]
         public MFilesAPI.Extensions.Email.SmtpConfiguration SmtpConfiguration
@@ -273,6 +313,11 @@ namespace Norco.Contractor.Portal
 = "WFS.DocumentExpiryNotification.InitialExpiryCheck";
 
 
+        [MFState]
+        public MFIdentifier DocumentExpiryNotificationVerifiedDocumentCheckState { get; set; }
+= "WFS.DocumentExpiryNotification.VerifiedDocumentCheck";
+
+        
 
         [MFState]
         public MFIdentifier InitialDocumentRequestState { get; set; }

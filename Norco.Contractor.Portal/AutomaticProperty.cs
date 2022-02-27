@@ -71,12 +71,15 @@ namespace Norco.Contractor.Portal
 
             try
             {
-                var companyName = env.ObjVerEx.GetPropertyText(Configuration.CompanyOfContractor);
-                if (!companyName.Equals(String.Empty))
+                var companyName = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
+                if (!companyName.Title.Equals(String.Empty))
                 {
-                 
-                        typedValue.SetValue(MFDataType.MFDatatypeText, companyName);
-                    
+
+                    var companyHubshareName = companyName.GetPropertyText(Configuration.CompanyHubshareName);
+                    if (!companyHubshareName.Equals(String.Empty))
+                    {
+                        typedValue.SetValue(MFDataType.MFDatatypeText, companyHubshareName);
+                    }
                 }
 
 
@@ -221,15 +224,17 @@ namespace Norco.Contractor.Portal
 
                 if (inductionDocuments != null)
                 {
-                    var lookups = new Lookups();
+                    Lookups lookups = new Lookups();
 
                     foreach (var inductDoc in inductionDocuments)
                     {
-                        lookups.Add(-1, new Lookup() { Item = inductDoc.ObjVer.ID });
+                        lookups.Add(-1, new Lookup() { Item = inductDoc.ID });
                     }
 
                     typedValue.SetValue(MFDataType.MFDatatypeMultiSelectLookup, lookups);
                 }
+                
+
 
 
             }
