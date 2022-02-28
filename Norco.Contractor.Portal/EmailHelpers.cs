@@ -29,14 +29,14 @@ namespace Norco.Contractor.Portal
             {
 
                 // Create a message.
-                using (var emailMessage = new EmailMessage(this.Configuration.SmtpConfiguration))
+                using (var emailMessage = new EmailMessage(this.Configuration.DocumentEmailSettings.SmtpConfiguration))
                 {
 
 
-                    emailMessage.SetFrom(this.Configuration.SmtpConfiguration.DefaultSender);
+                    emailMessage.SetFrom(this.Configuration.DocumentEmailSettings.SmtpConfiguration.DefaultSender);
 
 
-                    if (Configuration.CarbonCopyCompanyEmail)
+                    if (Configuration.DocumentEmailSettings?.CarbonCopyCompanyEmail ==true)
                     {
 
                         var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
@@ -61,23 +61,18 @@ namespace Norco.Contractor.Portal
                     }
 
 
+                    if (Configuration.DocumentEmailSettings?.NorcoNotificationPerson != String.Empty)
+                    {
+                        emailMessage.AddRecipient(AddressType.CarbonCopy, Configuration.DocumentEmailSettings.NorcoNotificationPerson);
+                    }
 
-                    emailMessage.AddRecipient(AddressType.CarbonCopy, Configuration.NorcoNotificationPerson);
 
 
-
-
-                    var certificateProperties = GetEmailProperties(env.ObjVerEx);
+                    var certificateProperties = GetEmailProperties(env.ObjVerEx, expired);
                     if (certificateProperties.subject != string.Empty && certificateProperties.emailBody != string.Empty)
                     {
-                        if (expired)
-                        {
-                            emailMessage.Subject = certificateProperties.subjectExpired;
-                        }
-                        else
-                        {
-                            emailMessage.Subject = certificateProperties.subject;
-                        }
+
+                        emailMessage.Subject = certificateProperties.subject;                        
                         emailMessage.HtmlBody = certificateProperties.emailBody;
 
                         // Add all files from the current object.
@@ -139,24 +134,36 @@ namespace Norco.Contractor.Portal
 
         }
 
-        private (string subject, string subjectExpired, string emailBody) GetEmailProperties(ObjVerEx objVerEx)
+        private (string subject, string emailBody) GetEmailProperties(ObjVerEx objVerEx, bool expired)
         {
             string subject = String.Empty;
-            string subjectExpired = String.Empty;
+
             string emailBody = String.Empty;
             try
             {
-                if (Configuration.CertificateEmailProperties != null || Configuration.CertificateEmailProperties.Count > 0)
+                //if (Configuration.CertificateEmailProperties != null || Configuration.CertificateEmailProperties.Count > 0)
+             if(Configuration.DocumentEmailSettings!=null)
                 {
+                    if (Configuration.DocumentEmailSettings.CertificateEmailProperties.Count > 0)
+                    {
+                        var docDefinition = Configuration.DocumentEmailSettings.CertificateEmailProperties.Where(type => type.DocumentType.ID == objVerEx.Class).FirstOrDefault();
 
-                    var docDefinition = Configuration.CertificateEmailProperties.Where(type => type.DocumentType.ID == objVerEx.Class).FirstOrDefault();
+                        subject = expired 
+                            ? objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectExpiredTextTemplate)
+                            : objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectTextTemplate);
 
+                        emailBody = objVerEx.ExpandPlaceholderText(docDefinition.EmailBodyTemplate);
 
+                    }
+                    //if the value not found or set above use the defaults
+                    if(emailBody.Equals(String.Empty))
+                    {
+                        subject = expired 
+                            ? objVerEx.ExpandPlaceholderText(Configuration.DocumentEmailSettings.DefaultEmailSubjectExpiredTextTemplate)
+                            : objVerEx.ExpandPlaceholderText(Configuration.DocumentEmailSettings.DefaultEmailSubjectTextTemplate);
 
-                    subject = objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectTextTemplate);
-                    subjectExpired = objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectExpiredTextTemplate);
-                    emailBody = objVerEx.ExpandPlaceholderText(docDefinition.EmailBodyTemplate);
-
+                        emailBody = objVerEx.ExpandPlaceholderText(Configuration.DocumentEmailSettings.DefaultEmailBodyTemplate);
+                    }
 
                 }
 
@@ -166,7 +173,7 @@ namespace Norco.Contractor.Portal
                 SysUtils.ReportErrorToEventLog("GetCertificateProperty", "Error getting Certificate property for email body.", ex);
             }
 
-            return (subject, subjectExpired,emailBody);
+            return (subject,emailBody);
         }
 
     }

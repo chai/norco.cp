@@ -41,6 +41,14 @@ namespace Norco.Contractor.Portal
     {
 
         [DataMember]
+        public MFilesAPI.Extensions.Email.SmtpConfiguration SmtpConfiguration
+        {
+            get;
+            set;
+        } = new MFilesAPI.Extensions.Email.SmtpConfiguration();
+
+
+        [DataMember]
         [JsonConfEditor(TypeEditor = "placeholderText", IsRequired = true, Label = "Default: Text to use as notification email subject for document about to expire.")]
         public string DefaultEmailSubjectTextTemplate;
 
@@ -56,8 +64,19 @@ namespace Norco.Contractor.Portal
 
 
         [DataMember]
+        [JsonConfEditor(Label = @"Additional person to notify for every notification sent")]
+        public string NorcoNotificationPerson { get; set; }
+        = $@"contractoradmin@norco.com.au";
+
+        [DataMember]
+        [JsonConfEditor(Label = @"Email notification for expiring document should CC in Company Email")]
+        public bool CarbonCopyCompanyEmail { get; set; }
+
+
+        [DataMember]
         [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
         public List<DocumentEmail> CertificateEmailProperties { get; set; }
+
 
 
     }
@@ -264,34 +283,20 @@ namespace Norco.Contractor.Portal
         public List<ContractorTypeCertification> ContractorTypeCertificationsDocumentList { get; set; }
 
 
-        [DataMember]
-        [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
-        public List<DocumentEmail> CertificateEmailProperties { get; set; }
+        //[DataMember]
+        //[JsonConfEditor(Label = @"Setting for email notification for expiring document")]
+        //public List<DocumentEmail> CertificateEmailProperties { get; set; }
 
         [DataMember]
-        [JsonConfEditor(Label = @"Setting for email notification for expiring document")]
+        [JsonConfEditor(Label = @"Setting for email notification for expiring document", IsRequired =true)]
         public DocumentEmailSettings DocumentEmailSettings { get; set; }
 
         
 
 
-        [DataMember]
-        [JsonConfEditor(Label = @"Email notification for expiring document should CC in Company Email")]
-        public bool CarbonCopyCompanyEmail { get; set; }
-
-        [DataMember]
-        public MFilesAPI.Extensions.Email.SmtpConfiguration SmtpConfiguration
-        {
-            get;
-            set;
-        } = new MFilesAPI.Extensions.Email.SmtpConfiguration();
 
 
 
-
-        [DataMember]
-        public string NorcoNotificationPerson { get; set; }
-= $@"contractoradmin@norco.com.au";
 
 
         [DataMember]
