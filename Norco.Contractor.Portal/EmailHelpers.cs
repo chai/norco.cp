@@ -144,16 +144,17 @@ namespace Norco.Contractor.Portal
                 //if (Configuration.CertificateEmailProperties != null || Configuration.CertificateEmailProperties.Count > 0)
              if(Configuration.DocumentEmailSettings!=null)
                 {
-                    if (Configuration.DocumentEmailSettings.CertificateEmailProperties.Count > 0)
+                    if (Configuration.DocumentEmailSettings.CertificateEmailProperties!=null)
                     {
                         var docDefinition = Configuration.DocumentEmailSettings.CertificateEmailProperties.Where(type => type.DocumentType.ID == objVerEx.Class).FirstOrDefault();
+                        if (docDefinition != null)
+                        {
+                            subject = expired
+                                ? objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectExpiredTextTemplate)
+                                : objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectTextTemplate);
 
-                        subject = expired 
-                            ? objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectExpiredTextTemplate)
-                            : objVerEx.ExpandPlaceholderText(docDefinition.EmailSubjectTextTemplate);
-
-                        emailBody = objVerEx.ExpandPlaceholderText(docDefinition.EmailBodyTemplate);
-
+                            emailBody = objVerEx.ExpandPlaceholderText(docDefinition.EmailBodyTemplate);
+                        }
                     }
                     //if the value not found or set above use the defaults
                     if(emailBody.Equals(String.Empty))
