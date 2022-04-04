@@ -91,7 +91,7 @@ namespace Norco.Contractor.Portal
                 if (objVerEx != null)
                 {
                     //touch varibale to cause autoproperty
-                    objVerEx.SaveProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefComment, MFDataType.MFDatatypeMultiLineText, $"Checked by background task at : {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    objVerEx.SaveProperty(Configuration.HiddenTouch, MFDataType.MFDatatypeMultiLineText, $"Lasted checked by background task at : {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
 
                 }
             }
