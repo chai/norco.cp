@@ -373,9 +373,9 @@ namespace Norco.Contractor.Portal
 
 
 
-        //[DataMember]
-        //[MFPropertyDef(Required = true)]
-        //public MFIdentifier PropertyToTouch { get; set; }
+        [DataMember]
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier HiddenTouch { get; set; } = "PD.HiddenTouch";
 
 
         //[DataMember]

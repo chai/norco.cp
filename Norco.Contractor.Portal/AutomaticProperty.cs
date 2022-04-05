@@ -63,7 +63,7 @@ namespace Norco.Contractor.Portal
             return typedValue;
         }
 
-        [PropertyCustomValue("PD.DocumentHubName")]
+     //   [PropertyCustomValue("PD.DocumentHubName")]
         public TypedValue setHubnameBasedOnCompany(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();
@@ -123,7 +123,7 @@ namespace Norco.Contractor.Portal
 
 
 
-        [PropertyCustomValue("PD.DocumentUploadedBy")]
+      //  [PropertyCustomValue("PD.DocumentUploadedBy")]
         public TypedValue setupUploaderBasedOnEmail(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();
@@ -184,7 +184,7 @@ namespace Norco.Contractor.Portal
 
 
  
-        [PropertyCustomValue("PD.EmployeeContractorEmail")]
+     //   [PropertyCustomValue("PD.EmployeeContractorEmail")]
         public TypedValue EmployeeContractorEmail(PropertyEnvironment env)
         {
             TypedValue typedValue = new TypedValue();
@@ -206,6 +206,34 @@ namespace Norco.Contractor.Portal
 
             return typedValue;
         }
+
+      //  CompanyAdminEmail
+
+        [PropertyCustomValue("PD.CompanyAdminEmail")]
+        public TypedValue CompanyAdminEmail(PropertyEnvironment env)
+        {
+            TypedValue typedValue = new TypedValue();
+            typedValue.SetValue(MFDataType.MFDatatypeText, false);
+            try
+            {
+                var company = env.ObjVerEx.GetDirectReference(Configuration.CompanyOfContractor);
+                if (company != null)
+                {
+                    typedValue.SetValue(MFDataType.MFDatatypeText, company.GetPropertyText(Configuration.EmailAddress));
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                SysUtils.ReportErrorToEventLog($"CompanyAdminEmail failed for. {Environment.NewLine} {ObjectDetails(env.ObjVerEx)}", ex);
+            }
+
+            return typedValue;
+        }
+
+
+
 
         [PropertyCustomValue("PD.InductionDocument(s)")]
         public TypedValue EmployeeContractorInductionDocuments(PropertyEnvironment env)
