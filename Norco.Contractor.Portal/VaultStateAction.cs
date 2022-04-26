@@ -23,6 +23,8 @@ namespace Norco.Contractor.Portal
 
                     try
                     {
+
+
                         var propertyValues = env.ObjVerEx.Properties;
                         propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefWorkflow, MFDataType.MFDatatypeLookup, Configuration.DocumentRequestWorkflow);
                         propertyValues.SetProperty((int)MFBuiltInPropertyDef.MFBuiltInPropertyDefState, MFDataType.MFDatatypeLookup, Configuration.InitialDocumentRequestState);
@@ -37,7 +39,7 @@ namespace Norco.Contractor.Portal
                         var docRequest = env.Vault.ObjectOperations.CreateNewObjectExQuick(
                               Configuration.DocumentRequestObject, propertyValues, null, false, true, null);
 
-
+                        
                         env.ObjVerEx.SaveProperty(Configuration.DocumentRequest, MFDataType.MFDatatypeLookup, docRequest);
                     }
                     catch(Exception createDocumentRequest)
@@ -94,7 +96,7 @@ namespace Norco.Contractor.Portal
 
             try
             {
-                var parentDocumentRequest = env.ObjVerEx.GetDirectReference(Configuration.OwnerDocumentRequest);
+                var parentDocumentRequest = env.ObjVerEx.GetDirectReference(Configuration.DocumentRequestsOwner);
                 if (parentDocumentRequest != null)
                 {
                     var expiredDoc = parentDocumentRequest.GetDirectReference(Configuration.ExpiredDocument);

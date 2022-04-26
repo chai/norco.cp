@@ -42,14 +42,16 @@ namespace Norco.Contractor.Portal
                     var currentCompany = env.ObjVerEx.GetPropertyText(Configuration.CompanyOfContractor);
                     if (currentCompany != String.Empty)
                     {
-                        var companyName = env.ObjVerEx.GetPropertyText(Configuration.InductionHubName);
-                        if (!companyName.Equals(String.Empty))
+                        var companyAdminEmail = env.ObjVerEx.GetPropertyText(Configuration.CompanyAdminEmail);
+                        if (!companyAdminEmail.Equals(String.Empty))
                         {
-                            var company = FindCompanyBasedOnName(env.Vault, companyName);
+                            
+                            var company = FindCompanyBasedOnEmail(env.Vault, companyAdminEmail);
                             if (company != null)
                             {
                                 propertyValues.SetProperty(Configuration.CompanyOfContractor, MFDataType.MFDatatypeMultiSelectLookup, company.ID);
                                 updated = true;
+                                
                             }
 
 

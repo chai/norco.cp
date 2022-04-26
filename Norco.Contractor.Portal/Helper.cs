@@ -138,19 +138,19 @@ namespace Norco.Contractor.Portal
         }
 
 
-        private ObjVerEx FindCompanyBasedOnName(Vault vault, string companyName)
+        private ObjVerEx FindCompanyBasedOnEmail(Vault vault, string companyAdminEmail)
         {
             try
             {
                 var searchBuilder = new MFSearchBuilder(vault);
                 searchBuilder.ObjType(Configuration.ContractorCompanyObject);
                 searchBuilder.Class(Configuration.ContractorCompanyClass);
-                searchBuilder.Property(Configuration.CompanyTitle, MFDataType.MFDatatypeText, companyName);
+                searchBuilder.Property(Configuration.CompanyAdminEmail, MFDataType.MFDatatypeText, companyAdminEmail);
                 return searchBuilder.FindOneEx();
             }
             catch (Exception ex)
             {
-                SysUtils.ReportErrorMessageToEventLog($"FindCompanyBasedOnName.", ex);
+                SysUtils.ReportErrorMessageToEventLog($"FindCompanyBasedOnAdminEmail.", ex);
             }
             return null;
         }

@@ -220,6 +220,11 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier DocumentRequest { get; set; }
             = "PD.DocumentRequest";
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier DocumentRequestsOwner { get; set; }
+    = "PD.DocumentRequests";
+
+
 
         [MFPropertyDef(Required = true)]
         public MFIdentifier DateOfIssue { get; set; }
@@ -357,7 +362,10 @@ namespace Norco.Contractor.Portal
         [MFPropertyDef(Required = true)]
         public MFIdentifier InductionHubName { get; set; }
 = "PD.InductionHubName";
-
+        [MFPropertyDef(Required = true)]
+        public MFIdentifier CompanyAdminEmail { get; set; }
+= "PD.CompanyAdminEmail";
+        
 
                 [MFPropertyDef(Required = true)]
         public MFIdentifier ReplacementDocument { get; set; }
